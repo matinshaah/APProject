@@ -62,18 +62,18 @@ public class StudentMainPanel extends UserMainPanel {
     }
 
     protected void setMainChart(){
-        supervisor = new MyJLabel("Supervisor:\t\t"+student.supervisor.name);
-        eduStatus = new MyJLabel("Educational Status:\t \t"+String.valueOf(student.status));
-        registrationLicense = new MyJLabel("Registration Permission:\t\t"+"Allowed to register");
-        registrationTime = new MyJLabel("Registration Time:\t\t"+"2022/5/30 9:00 AM");
+        supervisor = new MyJLabel(     "Supervisor:                                                          "+student.supervisor.name);
+        eduStatus = new MyJLabel(        "Educational Status:                                            "+student.status);
+        registrationLicense = new MyJLabel("Registration Permission:                                   "+"Allowed to register");
+        registrationTime = new MyJLabel( "Registration Time:                                            "+"2022/5/30 9:00 AM");
         this.add(supervisor);
         this.add(eduStatus);
         this.add(registrationLicense);
         this.add(registrationTime);
-        supervisor.setBounds(200,400,900,50);
-        eduStatus.setBounds(200,450,900,50);
-        registrationLicense.setBounds(200,500,500,50);
-        registrationTime.setBounds(200,550,900,50);
+        supervisor.setBounds(200,300,900,50);
+        eduStatus.setBounds(200,350,900,50);
+        registrationLicense.setBounds(200,400,900,50);
+        registrationTime.setBounds(200,450,900,50);
     }
 
     static class MyJLabel extends JLabel{
@@ -81,7 +81,7 @@ public class StudentMainPanel extends UserMainPanel {
         MyJLabel(String text){
             super(text);
             this.setOpaque(true);
-            this.setBorder(BorderFactory.createDashedBorder(Color.BLACK));
+            this.setBorder(BorderFactory.createDashedBorder(Color.red));
             this.setBackground(Color.green);
             this.setFont(font);
 

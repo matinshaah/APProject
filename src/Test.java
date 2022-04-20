@@ -17,5 +17,6 @@ public class Test {
         Student me =new Student("Matin","1","0410858961",math,new HashSet<>(),99, Student.StudentGrade.AS,evc, Student.Status.STUDYING);
         me.setEmail("shahnaziamirmatin@gmail.com"); //username:99000001
         me.courses.add(AP14002);
+
     }
 }

@@ -31,8 +31,8 @@ public class EVC_MainPanel extends TeacherMainPanel{
     protected void setMenuBar(){
         super.setMenuBar();
         reportCard.add(educationalStatus);
-        educationalStatus.add(newTeacher);
-        educationalStatus.add(newStudent);
+        registerNewUser.add(newTeacher);
+        registerNewUser.add(newStudent);
 
     }
     @Override

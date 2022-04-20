@@ -4,12 +4,13 @@ import Models.Student;
 import Models.User;
 
 import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDateTime;
 
 public class StudentMainPanel extends UserMainPanel {
     Student student;
     MyMenuItem educationalStatus,withdraw,recommendation,minor,eduCertificate,dormitory,thesisDefense;
-    JLabel supervisor,eduStatus,registrationLicense,registrationTime;
+    MyJLabel supervisor,eduStatus,registrationLicense,registrationTime;
 
     public StudentMainPanel(User student, LocalDateTime loginTime) {
         super(student,loginTime);
@@ -61,18 +62,30 @@ public class StudentMainPanel extends UserMainPanel {
     }
 
     protected void setMainChart(){
-        supervisor = new JLabel("Supervisor: "+student.supervisor.name);
-        eduStatus = new JLabel(String.valueOf(student.status));
-        registrationLicense = new JLabel("Allowed to register");
-        registrationTime = new JLabel("2022/5/30 9:00 AM");
+        supervisor = new MyJLabel("Supervisor:\t\t"+student.supervisor.name);
+        eduStatus = new MyJLabel("Educational Status:\t \t"+String.valueOf(student.status));
+        registrationLicense = new MyJLabel("Registration Permission:\t\t"+"Allowed to register");
+        registrationTime = new MyJLabel("Registration Time:\t\t"+"2022/5/30 9:00 AM");
         this.add(supervisor);
         this.add(eduStatus);
         this.add(registrationLicense);
         this.add(registrationTime);
-        supervisor.setBounds(100,500,300,20);
-        eduStatus.setBounds(100,530,500,20);
-        registrationLicense.setBounds(100,560,500,20);
-        registrationTime.setBounds(100,590,500,20);
+        supervisor.setBounds(200,400,900,50);
+        eduStatus.setBounds(200,450,900,50);
+        registrationLicense.setBounds(200,500,500,50);
+        registrationTime.setBounds(200,550,900,50);
+    }
+
+    static class MyJLabel extends JLabel{
+        static Font font = new Font("",Font.PLAIN,30);
+        MyJLabel(String text){
+            super(text);
+            this.setOpaque(true);
+            this.setBorder(BorderFactory.createDashedBorder(Color.BLACK));
+            this.setBackground(Color.green);
+            this.setFont(font);
+
+        }
     }
 
 }

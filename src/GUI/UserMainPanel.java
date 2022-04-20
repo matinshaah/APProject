@@ -38,6 +38,7 @@ public class UserMainPanel extends JPanel {
         MainFrame.mainFrame.add(this);
         this.setBounds(0,0, MainFrame.WIDTH -15, MainFrame.HEIGHT -85);
         this.setBackground(Color.blue);
+        this.setLayout(null);
         MainFrame.mainFrame.update();
         return false;
     }
@@ -67,7 +68,6 @@ public class UserMainPanel extends JPanel {
 
     protected void align(){
         setMenuBar();
-        this.setLayout(null);
         this.add(lastLoginLabel);
         lastLoginLabel.setBounds(1100,650,200,20);
         this.add(currentTimeLabel);

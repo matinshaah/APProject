@@ -69,6 +69,7 @@ public class LoginPanel extends JPanel {
         showPass.setBounds(970,320,20,20);
         nameField.setFont(new Font("",Font.PLAIN,20));
         passwordField.setFont(new Font("",Font.PLAIN,20));
+        captchaField.setFont(new Font("",Font.PLAIN,20));
         updateCaptcha();
         loginButton.setFocusable(false);
     }

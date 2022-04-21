@@ -1,7 +1,6 @@
 package GUI;
 
-import Models.Student;
-import Models.User;
+import Models.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,9 +43,8 @@ public class UserMainPanel extends JPanel {
     }
 
     protected void initCom(){
-        setListeners();
         setTime();
-        Font labelFont = new Font("",Font.PLAIN,15);
+        Font labelFont = new Font("",Font.PLAIN,20);
         lastLoginLabel.setFont(labelFont);
         currentTimeLabel.setFont(labelFont);
         emailLabel.setFont(labelFont);
@@ -64,18 +62,19 @@ public class UserMainPanel extends JPanel {
         tempScores = new MyMenuItem("Temporary Scores");
         profile = new MyMenuItem("User Profile");
         imgLabel.setIcon(new ImageIcon(user.image));
+        setListeners();
     }
 
     protected void align(){
         setMenuBar();
         this.add(lastLoginLabel);
-        lastLoginLabel.setBounds(1100,650,200,20);
+        lastLoginLabel.setBounds(1100,650,200,30);
         this.add(currentTimeLabel);
-        currentTimeLabel.setBounds(50,650,250,20);
+        currentTimeLabel.setBounds(50,650,350,30);
         this.add(nameLabel);
-        nameLabel.setBounds(20,40,200,20);
+        nameLabel.setBounds(20,40,200,30);
         this.add(emailLabel);
-        emailLabel.setBounds(20,70,300,20);
+        emailLabel.setBounds(20,70,350,30);
         this.add(imgLabel);
         imgLabel.setBounds(600,20,96,96);
 

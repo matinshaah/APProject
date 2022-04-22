@@ -9,8 +9,6 @@ import resources.ResourceManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 
@@ -85,58 +83,48 @@ public class LoginPanel extends JPanel {
         passwordField.setText("");
     }
     private void setListeners(){
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String name = nameField.getText();
-                String password =null;
-                try {
-                    password = User.hashPassword(passwordField.getText());
+        loginButton.addActionListener(e -> {
+            String name = nameField.getText();
+            String password =null;
+            try {
+                password = User.hashPassword(passwordField.getText());
 
-                } catch (NoSuchAlgorithmException ex) {
-                    ex.printStackTrace();
-                }
-                String cap = captchaField.getText();
-                if(name.equals("")||password.equals("")||cap.equals("")){
-                    JOptionPane.showMessageDialog(MainFrame.mainFrame,"Please fill all fields");
-                    updateCaptcha();
-                }else if(! cap.equals(captchaNum)){
-                    JOptionPane.showMessageDialog(MainFrame.mainFrame,"The captcha is wrong");
-                    updateCaptcha();
-                    clearText();
-                }else if(Controller.LoginButton(name,password)==null){
-                    JOptionPane.showMessageDialog(MainFrame.mainFrame,"Username or password is not valid");
-                    updateCaptcha();
-                    clearText();
-                }else {
-                    User user = Controller.LoginButton(name,password);
-                    if(user instanceof Student) new StudentMainPanel((Student) user, LocalDateTime.now());
-                    else if(user instanceof Teacher) {
-                        if(user instanceof EducationViceChar){
-                            new EVC_MainPanel((EducationViceChar)user,LocalDateTime.now());
-                        }else if(user instanceof DepartmentChair){
-                            new DC_MainPanel((DepartmentChair)user,LocalDateTime.now());
-                        }else {
-                            new TeacherMainPanel( user, LocalDateTime.now());
-                        }
-                    }
-                }
+            } catch (NoSuchAlgorithmException ex) {
+                ex.printStackTrace();
             }
-        });
-        showPass.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(showPass.isSelected()){
-                    passwordField.setEchoChar((char) 0);
-                }else passwordField.setEchoChar('•');
-            }
-        });
-        changeCaptcha.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            String cap = captchaField.getText();
+            if(name.equals("")||password.equals("")||cap.equals("")){
+                JOptionPane.showMessageDialog(MainFrame.mainFrame,"Please fill all fields");
                 updateCaptcha();
+            }else if(! cap.equals(captchaNum)){
+                JOptionPane.showMessageDialog(MainFrame.mainFrame,"The captcha is wrong");
+                updateCaptcha();
+                clearText();
+            }else if(Controller.LoginButton(name,password)==null){
+                JOptionPane.showMessageDialog(MainFrame.mainFrame,"Username or password is not valid");
+                updateCaptcha();
+                clearText();
+            }else {
+                User user = Controller.LoginButton(name,password);
+                if(user instanceof Student) {
+                    MainFrame.mainFrame.menuBar=new StudentMenuBar(user,LocalDateTime.now());
+                    new StudentMainPanel(user,LocalDateTime.now());
+                }
+                else {
+                    new UserMainPanel(user,LocalDateTime.now());
+                    if(user instanceof EducationViceChar) MainFrame.mainFrame.menuBar =(new EVCMenuBar(user,LocalDateTime.now()));
+                    else if(user instanceof DepartmentChair) MainFrame.mainFrame.menuBar =(new DCMenuBar(user,LocalDateTime.now()));
+                    else MainFrame.mainFrame.menuBar =(new TeacherMenuBar(user,LocalDateTime.now()));
+                }
+                MainFrame.mainFrame.setJMenuBar(MainFrame.mainFrame.menuBar);
             }
         });
+        showPass.addActionListener(e -> {
+            if(showPass.isSelected()){
+                passwordField.setEchoChar((char) 0);
+            }else passwordField.setEchoChar('•');
+        });
+        changeCaptcha.addActionListener(e -> updateCaptcha());
     }
 
 }

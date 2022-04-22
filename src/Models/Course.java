@@ -1,14 +1,17 @@
 package Models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Course {
-    AbsCourse absCourse;
-    int total;
+    public static ArrayList<Course> courseList = new ArrayList<>();
+    public AbsCourse absCourse;
+    public int total;
     HashSet<Student> students;
-    HashSet<Teacher> teachers;
-    int term;
+    public HashSet<Teacher> teachers;
+    public int term;
     public Course(int term,int total,AbsCourse absCourse,HashSet<Teacher> teachers,HashSet<Student> students){
+        courseList.add(this);
         this.term= term;
         this.total= total;
         this.absCourse=absCourse;

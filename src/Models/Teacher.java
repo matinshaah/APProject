@@ -4,9 +4,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 
 public class Teacher extends User{
+    public static HashSet<Teacher> list= new HashSet<>();
     private int idCounter;
     public Teacher(String name, String password, String nationalCode, Department department, HashSet<Course> courses,int roomNumber) throws NoSuchAlgorithmException {
         super(name, password, nationalCode, department,courses);
+        list.add(this);
         this.roomNumber=roomNumber;
         idCounter++;
         this.id=idCounter+10000;
@@ -32,6 +34,12 @@ public class Teacher extends User{
     }
     Type type;
     int roomNumber;
-
+    public static Teacher getTeacherByName(String name){
+        for (Teacher t :
+                list) {
+            if(t.name.equals(name)) return t;
+        }
+        return null;
+    }
 
 }

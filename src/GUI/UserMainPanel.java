@@ -11,11 +11,6 @@ import java.time.format.DateTimeFormatter;
 public class UserMainPanel extends JPanel {
     User user;
     LocalDateTime lastLogin;
-    final protected JMenuBar menuBar = new JMenuBar();
-    protected MyJMenu registration,educationalService,reportCard,applications;
-    private MyMenuItem profile;
-    private MyMenuItem courseList,teacherList,weeklySchedule,examList,tempScores;
-    final private MyMenuItem mainPage = new MyMenuItem("Main Page"),exit = new MyMenuItem("Log out");
     final private JLabel lastLoginLabel = new JLabel(),currentTimeLabel=new JLabel();
     final private JLabel nameLabel = new JLabel(),emailLabel=new JLabel();
     final private JLabel imgLabel = new JLabel();
@@ -29,8 +24,7 @@ public class UserMainPanel extends JPanel {
     }
     private boolean initPanel(){
         MainFrame.mainFrame.getContentPane().removeAll();
-        MainFrame.mainFrame.setJMenuBar(menuBar);
-        if(checkLastLogin(LocalDateTime.now())){
+        if(checkLastLogin(LocalDateTime.now(),lastLogin)){
             MainFrame.mainFrame.update();
             return true;
         }
@@ -51,22 +45,10 @@ public class UserMainPanel extends JPanel {
         nameLabel.setFont(labelFont);
         nameLabel.setText("Name: "+user.name);
         emailLabel.setText("Email: "+user.email);
-        reportCard = new MyJMenu("Report Card");
-        registration = new MyJMenu("Registration and Restoration");
-        educationalService = new MyJMenu("Educational Service");
-        courseList = new MyMenuItem("Courses List");
-        teacherList = new MyMenuItem("Teachers List");
-        weeklySchedule = new MyMenuItem("Weekly Schedule");
-        examList = new MyMenuItem("Exam List");
-        applications = new MyJMenu("Applications");
-        tempScores = new MyMenuItem("Temporary Scores");
-        profile = new MyMenuItem("User Profile");
         imgLabel.setIcon(new ImageIcon(user.image));
-        setListeners();
     }
 
     protected void align(){
-        setMenuBar();
         this.add(lastLoginLabel);
         lastLoginLabel.setBounds(1100,650,200,30);
         this.add(currentTimeLabel);
@@ -77,44 +59,7 @@ public class UserMainPanel extends JPanel {
         emailLabel.setBounds(20,70,350,30);
         this.add(imgLabel);
         imgLabel.setBounds(600,20,96,96);
-
     }
-    protected void setMenuBar(){
-        menuBar.add(mainPage);
-        mainPage.setPreferredSize(new Dimension(mainPage.getPreferredSize().width,40));
-//        menuBar.setBackground(Color.green);
-        menuBar.add(registration);
-        registration.add(courseList);
-        registration.add(teacherList);
-        menuBar.add(educationalService);
-        educationalService.add(weeklySchedule);
-        educationalService.add(examList);
-        educationalService.add(applications);
-        menuBar.add(reportCard);
-        reportCard.add(tempScores);
-        menuBar.add(profile);
-        setNewRegistration();
-        menuBar.add(exit);
-        MainFrame.mainFrame.update();
-    }
-    protected void setNewRegistration(){ //for adding EVC registerNewUser myMenuItem to menuBar
-
-    }
-
-    protected void setListeners(){
-        exit.addActionListener(e -> {
-            menuBar.removeAll();
-            MainFrame.mainFrame.update();
-            new LoginPanel();
-
-        });
-        mainPage.addActionListener(e -> {
-            if(user instanceof Student) new StudentMainPanel(user,lastLogin);
-            else new TeacherMainPanel(user,lastLogin);
-        });
-    }
-
-
     private void setTime() {
         final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         Timer t = new Timer(1000, e -> {
@@ -124,13 +69,14 @@ public class UserMainPanel extends JPanel {
         t.start();
         lastLoginLabel.setText("Last login: "+DateTimeFormatter.ofPattern("HH:mm:ss").format(lastLogin));
     }
-    protected boolean checkLastLogin(LocalDateTime now){
+    public static boolean checkLastLogin(LocalDateTime now,LocalDateTime lastLogin){
         Duration timeElapsed =Duration.between(lastLogin,now);
         long difference = timeElapsed.toMillis();
         long hourToMillis =3600000;
         if(difference >3*hourToMillis){
             JOptionPane.showMessageDialog(MainFrame.mainFrame,"Please login again");
             MainFrame.mainFrame.getContentPane().removeAll();
+            MainFrame.mainFrame.menuBar.removeAll();
             new LoginPanel();
             return true;
         }

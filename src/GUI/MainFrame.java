@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
+    UserMenuBar menuBar;
     public static  MainFrame mainFrame;
     public static int WIDTH=1400,HEIGHT=800;
     public MainFrame(){

@@ -1,31 +1,26 @@
 package GUI;
 
 import Models.EducationViceChar;
-import Models.Teacher;
-
+import Models.User;
 
 import java.time.LocalDateTime;
 
-public class EVC_MainPanel extends TeacherMainPanel{
+public class EVCMenuBar extends TeacherMenuBar{
     EducationViceChar evc;
     private MyMenuItem educationalStatus,newTeacher,newStudent;
     private MyJMenu registerNewUser;
-    public EVC_MainPanel(Teacher teacher, LocalDateTime loginTime) {
-        super(teacher,loginTime);
-
+    EVCMenuBar(User user, LocalDateTime lastLogin) {
+        super(user,lastLogin);
     }
+
     @Override
-    protected void initCom(){
-        evc = (EducationViceChar) teacher;
+    protected void initCom() {
+        this.evc = (EducationViceChar) teacher;
         super.initCom();
         educationalStatus = new MyMenuItem("Educational Status");
         registerNewUser = new MyJMenu("Register New User");
         newTeacher = new MyMenuItem("New Teacher");
         newStudent = new MyMenuItem("New Student");
-    }
-    @Override
-    protected void align(){
-        super.align();
     }
     @Override
     protected void setMenuBar(){
@@ -37,10 +32,10 @@ public class EVC_MainPanel extends TeacherMainPanel{
     }
     @Override
     protected void setNewRegistration(){
-        menuBar.add(registerNewUser);
+        this.add(registerNewUser);
     }
-    @Override
     protected void setListeners(){
-         super.setListeners();
+        super.setListeners();
+
     }
 }

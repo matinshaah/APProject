@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 public class StudentMainPanel extends UserMainPanel {
     Student student;
-    MyMenuItem educationalStatus,withdraw,recommendation,minor,eduCertificate,dormitory,thesisDefense;
     MyJLabel supervisor,eduStatus,registrationLicense,registrationTime;
 
     public StudentMainPanel(User student, LocalDateTime loginTime) {
@@ -21,44 +20,12 @@ public class StudentMainPanel extends UserMainPanel {
     protected void initCom(){
         this.student=(Student) user;
         super.initCom();
-        educationalStatus = new MyMenuItem("Educational Status");
-        withdraw = new MyMenuItem("WithDraw from Education");
-        eduCertificate = new MyMenuItem("Educational Certificate");
-        recommendation = new MyMenuItem("Recommendation");
-        minor = new MyMenuItem("Minor");
-        dormitory = new MyMenuItem("Dormitory");
-        thesisDefense = new MyMenuItem("Thesis Defense");
         setMainChart();
 
     }
     @Override
     protected void align(){
         super.align();
-    }
-    @Override
-    protected void setMenuBar(){
-        super.setMenuBar();
-        reportCard.add(educationalStatus);
-        setApplications();
-    }
-    @Override
-    protected void setListeners(){
-        super.setListeners();
-
-    }
-    private void setApplications(){
-        applications.add(eduCertificate);
-        if(student==null) System.out.println("khar");
-        if(student.grade== Student.StudentGrade.AS){ //karshenasi
-            applications.add(recommendation);
-            applications.add(minor);
-        }else if(student.grade == Student.StudentGrade.MS ){  //asrshad
-            applications.add(recommendation);
-            applications.add(dormitory);
-        }else { //doctora
-            applications.add(thesisDefense);
-        }
-        applications.add(withdraw);
     }
 
     protected void setMainChart(){

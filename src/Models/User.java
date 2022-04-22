@@ -15,7 +15,7 @@ public class User {
     public String name,email,password,nationalCode,phoneNumber;
     public int id;
     public Image image;
-    Department department;
+    public Department department;
     public HashSet<Course> courses;
 
     public void setEmail(String email) {

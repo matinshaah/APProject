@@ -1,22 +1,23 @@
 package Models;
 
-import resources.ImageResource;
-import resources.ResourceManager;
-
 import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 
-public class User {
+public class  User {
     public static final HashSet<User> userList = new HashSet<>();
 
     public String name,email,password,nationalCode,phoneNumber;
     public int id;
-    public Image image;
+    public String image;
     public Department department;
-    public HashSet<Course> courses;
+    public ArrayList<Course> courses;
+    public LocalDateTime lastLogin;
+    public Color color=Color.pink;
 
     public void setEmail(String email) {
         this.email = email;
@@ -30,22 +31,19 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
-    }
 
     public void setDepartment(Department department) {
         this.department = department;
     }
 
-    public User(String name, String password, String nationalCode, Department department, HashSet<Course> courses) throws NoSuchAlgorithmException {
+    public User(String name, String password, String nationalCode, Department department, ArrayList<Course> courses) throws NoSuchAlgorithmException {
         userList.add(this);
         this.name = name;
         this.password=hashPassword(password);
         this.nationalCode = nationalCode;
         this.department= department;
         this.courses=courses;
-        this.image= ResourceManager.get(ImageResource.defaultProfile);
+        this.image= "src/resources/Images/defaultProfile.png";
     }
     public static String hashPassword (String password) throws NoSuchAlgorithmException {
         MessageDigest digest =MessageDigest.getInstance("SHA-256");

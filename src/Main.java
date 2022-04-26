@@ -10,14 +10,11 @@ public class Main {
     public static void main(String[] args) throws NoSuchAlgorithmException {
         new Test();
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
+        SwingUtilities.invokeLater(() -> {
 
-                MainFrame.mainFrame = new MainFrame();
-                new LoginPanel();
+            MainFrame.mainFrame = new MainFrame();
+            new LoginPanel();
 
-            }
         });
     }
 }

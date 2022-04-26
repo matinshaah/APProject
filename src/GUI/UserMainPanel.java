@@ -20,17 +20,16 @@ public class UserMainPanel extends JPanel {
         if(initPanel()) return;
         initCom();
         align();
+        if(checkLastLogin(LocalDateTime.now(),lastLogin,user)){
+            MainFrame.mainFrame.update();
+        }
         MainFrame.mainFrame.update();
     }
     private boolean initPanel(){
         MainFrame.mainFrame.getContentPane().removeAll();
-        if(checkLastLogin(LocalDateTime.now(),lastLogin)){
-            MainFrame.mainFrame.update();
-            return true;
-        }
         MainFrame.mainFrame.add(this);
         this.setBounds(0,0, MainFrame.WIDTH -15, MainFrame.HEIGHT -85);
-        this.setBackground(Color.blue);
+        this.setBackground(user.color);
         this.setLayout(null);
         MainFrame.mainFrame.update();
         return false;
@@ -69,15 +68,15 @@ public class UserMainPanel extends JPanel {
         t.start();
         lastLoginLabel.setText("Last login: "+DateTimeFormatter.ofPattern("HH:mm:ss").format(lastLogin));
     }
-    public static boolean checkLastLogin(LocalDateTime now,LocalDateTime lastLogin){
+    public static boolean checkLastLogin(LocalDateTime now,LocalDateTime lastLogin,User user){
         Duration timeElapsed =Duration.between(lastLogin,now);
         long difference = timeElapsed.toMillis();
         long hourToMillis =3600000;
         if(difference >3*hourToMillis){
-            JOptionPane.showMessageDialog(MainFrame.mainFrame,"Please login again");
+            JOptionPane.showMessageDialog(MainFrame.mainFrame,"You must change your password");
             MainFrame.mainFrame.getContentPane().removeAll();
             MainFrame.mainFrame.menuBar.removeAll();
-            new LoginPanel();
+            new ChangePasswordPanel(user,LocalDateTime.now());
             return true;
         }
         return false;

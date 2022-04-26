@@ -5,13 +5,10 @@ import Models.*;
 import resources.Captcha;
 import resources.ImageResource;
 import resources.ResourceManager;
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-
 
 public class LoginPanel extends JPanel {
     final private JLabel username=new JLabel("Username"),password=new JLabel("Password"),captchaName = new JLabel("Enter the number");
@@ -64,12 +61,13 @@ public class LoginPanel extends JPanel {
         captchaField.setBounds(550,350,200,40);
         changeCaptcha.setBounds(910,350,40,40);
         loginButton.setBounds(700,450,80,50);
-        showPass.setBounds(970,320,20,20);
+        showPass.setBounds(970,315,20,20);
         nameField.setFont(new Font("",Font.PLAIN,20));
         passwordField.setFont(new Font("",Font.PLAIN,20));
         captchaField.setFont(new Font("",Font.PLAIN,20));
         updateCaptcha();
         loginButton.setFocusable(false);
+        showPass.setOpaque(false);
     }
 
     private void updateCaptcha(){
@@ -93,7 +91,7 @@ public class LoginPanel extends JPanel {
                 ex.printStackTrace();
             }
             String cap = captchaField.getText();
-            if(name.equals("")||password.equals("")||cap.equals("")){
+            if(name.equals("")||password==null||password.equals("")||cap.equals("")){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Please fill all fields");
                 updateCaptcha();
             }else if(! cap.equals(captchaNum)){
@@ -112,8 +110,8 @@ public class LoginPanel extends JPanel {
                 }
                 else {
                     new UserMainPanel(user,LocalDateTime.now());
-                    if(user instanceof EducationViceChar) MainFrame.mainFrame.menuBar =(new EVCMenuBar(user,LocalDateTime.now()));
-                    else if(user instanceof DepartmentChair) MainFrame.mainFrame.menuBar =(new DCMenuBar(user,LocalDateTime.now()));
+                    if(((Teacher) user).isEVC ) MainFrame.mainFrame.menuBar =(new EVCMenuBar(user,LocalDateTime.now()));
+    //                else if(((Teacher) user).isDC) MainFrame.mainFrame.menuBar =(new DCMenuBar(user,LocalDateTime.now()));
                     else MainFrame.mainFrame.menuBar =(new TeacherMenuBar(user,LocalDateTime.now()));
                 }
                 MainFrame.mainFrame.setJMenuBar(MainFrame.mainFrame.menuBar);

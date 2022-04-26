@@ -1,5 +1,6 @@
 package GUI;
 
+import Models.Grade;
 import Models.Student;
 import Models.User;
 
@@ -30,6 +31,7 @@ public class StudentMenuBar extends UserMenuBar{
     protected void setListeners() {
         super.setListeners();
         courseList.addActionListener(e -> new CoursesListPanel(user,lastLogin));
+        teacherList.addActionListener(e -> new TeacherListPanel(user,lastLogin));
     }
 
     protected void setMenuBar(){
@@ -40,11 +42,10 @@ public class StudentMenuBar extends UserMenuBar{
 
     private void setApplications(){
         applications.add(eduCertificate);
-        if(student==null) System.out.println("khar");
-        if(student.grade== Student.StudentGrade.AS){ //karshenasi
+        if(student.grade== Grade.BS){ //karshenasi
             applications.add(recommendation);
             applications.add(minor);
-        }else if(student.grade == Student.StudentGrade.MS ){  //asrshad
+        }else if(student.grade == Grade.MS ){  //arshad
             applications.add(recommendation);
             applications.add(dormitory);
         }else { //doctora

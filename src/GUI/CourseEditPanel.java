@@ -12,7 +12,7 @@ import java.awt.*;
 import java.time.LocalDateTime;
 
 public class CourseEditPanel extends UserMainPanel{
-    JButton saveButton;
+    JButton saveButton,delete;
     Course course;
     JTable table;
     public CourseEditPanel(User user, LocalDateTime loginTime, Course course) {
@@ -22,27 +22,32 @@ public class CourseEditPanel extends UserMainPanel{
         initTable();
         setTable();
         this.add(table);
+        if(course!=null) {
+            this.add(delete);
+            delete.setBounds(420,580,120,30);
+        }
     }
 
     @Override
     protected void initCom() {
         super.initCom();
         saveButton = new JButton("save");
+        delete = new JButton("delete course");
     }
     @Override
     protected void align() {
         super.align();
         this.add(saveButton);
-        saveButton.setBounds(800,580,80,30);
+        saveButton.setBounds(860,580,80,30);
     }
     private void initTable(){
-        table = new JTable(7,2);
-        table.setBounds(300,150,800,420);
-        table.setBackground(Color.blue);
+        table = new JTable();
+        table.setBounds(300,120,800,450);
+        table.setBackground(user.color);
         table.setFont(new Font("",Font.BOLD,20));
         table.setBorder(BorderFactory.createLineBorder(Color.black));
 
-        DefaultTableModel tableModel = new DefaultTableModel(7,2) {
+        DefaultTableModel tableModel = new DefaultTableModel(10,2) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 if(column==0) return false;
@@ -51,7 +56,7 @@ public class CourseEditPanel extends UserMainPanel{
         };
         table.setModel(tableModel);
 
-        table.setRowHeight(60);
+        table.setRowHeight(45);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
@@ -68,6 +73,11 @@ public class CourseEditPanel extends UserMainPanel{
         table.setValueAt("department",4,0);
         table.setValueAt("Prerequisite Courses",5,0);
         table.setValueAt("term",6,0);
+        table.setValueAt("class time",7,0);
+        table.setValueAt("grade",8,0);
+        table.setValueAt("exam time",9,0);
+        table.setValueAt("yyyy/MM/dd hh:mm",9,1);
+
 
         table.setValueAt(user.department.name, 4, 1);
         if(course!=null) {
@@ -86,19 +96,31 @@ public class CourseEditPanel extends UserMainPanel{
             }
             table.setValueAt(pre.toString(), 5, 1);
             table.setValueAt(course.term+"", 6, 1);
+            table.setValueAt(course.classTime, 7, 1);
+            table.setValueAt(course.absCourse.grade.name(), 8, 1);
+            table.setValueAt(course.examTime,9,1);
         }
     }
     private void setListeners(){
         saveButton.addActionListener(e -> {
             String message = Controller.editCourse(course,(table.getValueAt(0,1)+"").trim(),(table.getValueAt(1,1)+"").trim(),
                     (table.getValueAt(2,1)+"").trim(),(table.getValueAt(3,1)+"").trim(),
-                    (table.getValueAt(4,1)+"".trim()),(table.getValueAt(5,1)+"").trim()
-                    ,(table.getValueAt(6,1)+"").trim());
+                    (table.getValueAt(4,1)+"".trim()),(table.getValueAt(5,1)+"").trim(),(table.getValueAt(6,1)+"").trim(),
+                    (table.getValueAt(7,1)+"").trim(),(table.getValueAt(8,1)+"").trim(),(table.getValueAt(9,1)+"").trim());
             if(! message.equals("")){
-                JOptionPane.showMessageDialog(MainFrame.mainFrame,"We've got a problem,please check the \""+message+"\" part and try again");
+                if(message.equals("id"))
+                    JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course already exists");
+                else JOptionPane.showMessageDialog(MainFrame.mainFrame,"We've got a problem,please check the \""+message+"\" part and try again");
             }else {
-                JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course edited successfully");
+                if(course==null) JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course is added successfully");
+                else JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course edited successfully");
+                new EVCCoursePanel(user,lastLogin);
             }
+        });
+        delete.addActionListener(e -> {
+            Controller.removeCourse(course);
+            JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course deleted successfully");
+            new EVCCoursePanel(user,lastLogin);
         });
     }
 

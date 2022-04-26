@@ -1,6 +1,5 @@
 package GUI;
 
-import Models.EducationViceChar;
 import Models.Teacher;
 import Models.User;
 
@@ -26,10 +25,14 @@ public class TeacherMenuBar extends UserMenuBar{
     @Override
     protected void setListeners(){
         super.setListeners();
-            courseList.addActionListener(e -> {
-            if(! (teacher instanceof EducationViceChar))
+        courseList.addActionListener(e -> {
+            if(! teacher.isEVC )
                 new CoursesListPanel(user,lastLogin);
             else  new EVCCoursePanel(user,lastLogin);
+        });
+        teacherList.addActionListener(e -> {
+            if(! teacher.isDC ) new TeacherListPanel(user,lastLogin);
+            else new DCTeacherPanel(user,lastLogin);
         });
 
     }

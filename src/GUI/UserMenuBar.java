@@ -36,10 +36,13 @@ public class UserMenuBar extends JMenuBar {
 
     protected void setMenuBar(){
         this.add(mainPage);
+//        this.setBackground(Color.cyan);
+        mainPage.setOpaque(false);
         mainPage.setPreferredSize(new Dimension(mainPage.getPreferredSize().width,40));
-//        this.setBackground(Color.green);
         this.add(registration);
+        registration.setBackground(Color.green);
         registration.add(courseList);
+        courseList.setOpaque(false);
         registration.add(teacherList);
         this.add(educationalService);
         educationalService.add(weeklySchedule);
@@ -48,8 +51,10 @@ public class UserMenuBar extends JMenuBar {
         this.add(reportCard);
         reportCard.add(tempScores);
         this.add(profile);
+        profile.setOpaque(false);
         setNewRegistration();
         this.add(exit);
+        exit.setOpaque(false);
         MainFrame.mainFrame.update();
     }
     protected void setNewRegistration(){ //for adding EVC registerNewUser myMenuItem to menuBar
@@ -68,14 +73,11 @@ public class UserMenuBar extends JMenuBar {
             else new UserMainPanel(user,lastLogin);
         });
         profile.addActionListener(e -> {
-            if(UserMainPanel.checkLastLogin(LocalDateTime.now(),lastLogin)) return;
-            MainFrame.mainFrame.getContentPane().removeAll();
-            if(user instanceof Student) new StudentProfilePanel(user,lastLogin);
-            else if(user instanceof EducationViceChar) new TeacherProfilePanel(user,lastLogin);
-            else if(user instanceof DepartmentChair) new TeacherProfilePanel(user,lastLogin);
-            else  new TeacherProfilePanel( user,lastLogin);
+            if(user instanceof Student) new StudentProfilePanel(user,lastLogin,(Student) user);
+            else  new TeacherProfilePanel( user,lastLogin,(Teacher) user);
             MainFrame.mainFrame.update();
         });
+        weeklySchedule.addActionListener(e -> new WeeklySchedulePanel(user,lastLogin));
+        examList.addActionListener(e -> new WeeklySchedulePanel(user,lastLogin));
     }
-
 }

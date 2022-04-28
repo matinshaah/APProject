@@ -1,6 +1,6 @@
 package GUI;
 
-import Models.Course;
+
 import Models.Department;
 import Models.Teacher;
 import Models.User;
@@ -28,6 +28,7 @@ public class TeacherListPanel  extends UserMainPanel{
         this.add(filter);
         filter.setBounds(50,150,100,30);
         filter.setOpaque(true);
+        filter.setBorder(BorderFactory.createLineBorder(Color.black));
     }
     private  void  updatePane(){
         if(pane!= null) this.remove(pane);

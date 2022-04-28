@@ -18,6 +18,7 @@ public class EVCMenuBar extends TeacherMenuBar{
         registerNewUser = new MyJMenu("Register New User");
         newTeacher = new MyMenuItem("New Teacher");
         newStudent = new MyMenuItem("New Student");
+
     }
     @Override
     protected void setMenuBar(){
@@ -36,7 +37,6 @@ public class EVCMenuBar extends TeacherMenuBar{
         super.setListeners();
         newTeacher.addActionListener(e ->new TeacherEditPanel(user,lastLogin,null));
         newStudent.addActionListener(e ->new StudentEditPanel(user,lastLogin,null));
-
-
+        educationalStatus.addActionListener(e-> new EVCEduStatusPanel(user,lastLogin));
     }
 }

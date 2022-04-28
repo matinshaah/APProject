@@ -2,6 +2,7 @@ package Controller;
 
 import Models.*;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -50,6 +51,122 @@ public class Controller {
                 return c;
         }
         return null;
+    }
+    public static boolean newMinorReq(Student student,String secDep){
+        Department secondDep = Department.getDepartmentByName(secDep);
+        if(secondDep==null||secondDep==student.department) return false;
+        else {
+            new Minor(student,secondDep);
+        }
+        return true;
+    }
+    public static boolean newRecommendReq(Student student,String teacherID){
+        Teacher teacher = Teacher.getTeacherByID(teacherID);
+        if(teacher==null) return false;
+        else {
+            new Recommendation(student,teacher);
+        }
+        return true;
+    }
+    public static boolean newEduCertificateReq(Student student){
+        for (Request r :
+                Request.requests) {
+            if (r instanceof EduCertificate && r.student == student && r.result == 0)
+                return false;
+        }
+
+        new EduCertificate(student);
+        return true;
+    }
+    public static boolean newThesisDefenseReq(Student student){
+        for (Request r :
+                Request.requests) {
+            if (r instanceof ThesisDefense && r.student == student && r.result == 0)
+                return false;
+        }
+        new ThesisDefense(student);
+        return true;
+    }
+    public static boolean newDormitoryReq(Student student){
+        for (Request r :
+                Request.requests) {
+            if (r instanceof Dormitory && r.student == student)
+                return false;
+        }
+        new Dormitory(student);
+        return true;
+    }
+    public static boolean newWithdrawReq(Student student){
+        for (Request r :
+                Request.requests) {
+            if (r instanceof Withdraw && r.student == student)
+                return false;
+        }
+        new Withdraw(student);
+        return true;
+    }
+    public static void replyReq(Request request,Teacher teacher,int isAccepted){//1)accepted 2)rejected
+        if(request instanceof Minor){
+            Minor minor = (Minor) request;
+            if(minor.secondDep==teacher.department) minor.secondAccepted=isAccepted;
+            else minor.firstAccepted=isAccepted;
+            minor.checkResult();
+        }else {
+            request.result=isAccepted;
+            if(request instanceof Withdraw && isAccepted==1) request.student.status= Student.Status.WITHDRAW_FROM_EDUCATION;
+        }
+    }
+    public static int recordObjection(Student student,String courseID,String objectionText){//0)empty objection 1)success 2)has already object
+        if(objectionText.equals("")) return 0;
+        if(student.scores.get(courseID).objectionText.equals("")) {
+            student.scores.get(courseID).objectionText=objectionText;
+            return 1;
+        }else return 2;
+    }
+    public static int recordObjectionAnswer(Course course, String studentID, JTable table) {//-1)student not found 0)empty body 1)success 2)already answered
+        int row = -1;
+        for (int i = 0; i < table.getRowCount(); i++) {
+            if ((table.getValueAt(i, 1) + "").trim().equals(studentID)) {
+                row = i;
+                break;
+            }
+        }
+        if (row == -1) return -1;
+        Student student = (Student) findUserById(studentID);
+        String text = (table.getValueAt(row, 5) + "").trim();
+        if (text.equals("")) return 0;
+        if (student.scores.get(course.id + "").objectionAnswer.equals("")) {
+            student.scores.get(course.id+"").objectionAnswer=text;
+            return 1;
+        }else return 2;
+    }
+    public static int setTempScores(Course course,JTable table){//0) not all score 1)success 2)already given 3)score out of bound
+        if(course.status== Course.ScoreStatus.Final) return 2;
+        for (int i = 0; i < table.getRowCount(); i++) {
+            String score = (table.getValueAt(i, 3) + "").trim();
+            if (score.equals("")) return 0;
+            if (!isValidScore(score)) return 3;
+        }
+        course.status= Course.ScoreStatus.Temporary;
+        for (int i = 0; i < table.getRowCount(); i++) {
+            String score = (table.getValueAt(i, 3) + "").trim();
+            String studentID =(table.getValueAt(i, 1) + "").trim();
+            Student student = (Student) findUserById(studentID);
+            student.scores.get(course.id+"").setScore(score);
+        }
+        return 1;
+    }
+    public static int setFinalScores(Course course,JTable table){//0)not temporary  1)success 2)already given
+        if(course.status== Course.ScoreStatus.NotGiven) return 0;
+        if(course.status== Course.ScoreStatus.Final) return 2;
+        course.status= Course.ScoreStatus.Final;
+        for (int i = 0; i < table.getRowCount(); i++) {
+//            String score = (table.getValueAt(i, 3) + "").trim();
+            String studentID =(table.getValueAt(i, 1) + "").trim();
+            Student student = (Student) findUserById(studentID);
+            student.scores.get(course.id+"").isFinal=true;
+        }
+        return 1;
     }
     public static Teacher findTeacherByID(String id){
         for (Teacher t :
@@ -122,6 +239,7 @@ public class Controller {
         }
         return "";
     }
+
     public static String editTeacher(Teacher teacher,String name,String nationalCode,String department
                                      ,String degree,String email,String phoneNumber,String imagePath)  {
         if(name.equals("")) return "name";
@@ -232,7 +350,7 @@ public class Controller {
                 }
             }
             if(absCourse==null) absCourse =new AbsCourse(name,Integer.parseInt(credit),Department.getDepartmentByName(department),absCourses, Grade.getGradeByName(grade));
-            course=new Course(Integer.parseInt(term),Integer.parseInt(total),absCourse,teacherHashSet,new HashSet<>(),classTime,examTime);
+            course=new Course(Integer.parseInt(term),Integer.parseInt(total),absCourse,teacherHashSet,new ArrayList<>(),classTime,examTime);
         }else {
             course.absCourse.name=name;
             course.absCourse.credit=Integer.parseInt(credit);
@@ -285,13 +403,29 @@ public class Controller {
         course.absCourse.courses.remove(course);
         Course.courseList.remove(course);
     }
-
+    public static User findUserById(String id){
+        for (User u :
+                User.userList) {
+            if(id.equals(u.id+""))
+            return u;
+        }
+        return null;
+    }
     private static boolean isNotNumeric(String num){
         for (char c :
                 num.toCharArray()) {
             if(c-'0'<0||c-'0'>9) return true;
         }
         return false;
+    }
+    private static boolean isValidScore(String score){
+        double d;
+        try {
+            d=Double.parseDouble(score);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return d>=0d&&d<=20d;
     }
     public static boolean isValidDate(String dateStr) {
         DateTimeFormatter dateFormatter =DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");

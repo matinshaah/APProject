@@ -11,7 +11,7 @@ import java.util.HashSet;
 public class  User {
     public static final HashSet<User> userList = new HashSet<>();
 
-    public String name,email,password,nationalCode,phoneNumber;
+    public String name,email="-",password,nationalCode,phoneNumber;
     public int id;
     public String image;
     public Department department;
@@ -60,5 +60,13 @@ public class  User {
             hexString.append(hex);
         }
         return hexString.toString();
+    }
+    public static User getUserByName(String name){
+        for (User u :
+                userList) {
+            if(u.name.equals(name))
+                return u;
+        }
+        return null;
     }
 }

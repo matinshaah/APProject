@@ -22,6 +22,7 @@ public class StudentProfilePanel extends StudentEditPanel {
         super.initCom();
         changePass = new JButton("change password");
         color = new JMenu("color");
+        color.setBorder(BorderFactory.createLineBorder(Color.black));
         color.setOpaque(true);
         blue = new JMenuItem("blue");
         blue.setForeground(Color.blue);

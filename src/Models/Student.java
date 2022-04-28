@@ -2,18 +2,20 @@ package Models;
 
 import java.awt.*;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
+
 
 public class Student extends User{
     public Teacher supervisor;
     public final int enteringYear;
     private static int idCounter=0;
+    public HashMap<String,Score > scores=new HashMap<>(); //key:courseID,value:score
     public Status status;
     public Grade grade;
-    int totalAverage;
 
-    public Student(String name, String password, String nationalCode, Department department , ArrayList<Course> courses, int enteringYear, Grade grade) throws NoSuchAlgorithmException {
+    private Student(String name, String password, String nationalCode, Department department , ArrayList<Course> courses, int enteringYear, Grade grade) throws NoSuchAlgorithmException {
         super(name,password,nationalCode,department,courses);
         idCounter++;
         this.enteringYear=enteringYear;
@@ -22,6 +24,7 @@ public class Student extends User{
         if(courses!=null) {
             for (Course c :
                     courses) {
+                scores.put(c.id+"",new Score());
                 c.students.add(this);
             }
         }
@@ -37,6 +40,13 @@ public class Student extends User{
         this.image=imagePath;
         this.email=email;
         this.phoneNumber=phoneNumber;
+    }
+    public static void addCourse(Student student,Course c){
+        if(! student.courses.contains(c)){
+            student.courses.add(c);
+            student.scores.put(c.id+"",new Score());
+            c.students.add(student);
+        }
     }
 
     public enum Status{
@@ -58,6 +68,46 @@ public class Student extends User{
             return null;
         }
     }
+    public int getPassedCreditNumber(){
+        int number=0;
+        for (Course c :
+                courses) {
+            if(c.status!= Course.ScoreStatus.NotGiven&&scores.get(c.id+"").passed) number+=c.absCourse.credit;
+        }
+        return number;
+    }
+    public double getTotalAverage(){
+        double sum=0d;
+        int credits=0;
+        for (Course c :
+                courses) {
+            if(c.status== Course.ScoreStatus.Final){
+                sum+=(Double.parseDouble(scores.get(c.id+"").score)*c.absCourse.credit);
+                credits+=c.absCourse.credit;
+            }
+        }
+        return credits!=0?sum/credits:0;
+    }
 
 
+
+    public static class Score{
+        private static final DecimalFormat df = new DecimalFormat("0.00");
+        private static final DecimalFormat df2 = new DecimalFormat("0");
+        public String score="";
+        public String objectionText="",objectionAnswer="";
+        public boolean isFinal,passed;
+        public Score(){
+
+        }
+        public void setScore(String str){//we know 0<=d<=20
+            Double d = Double.parseDouble(str);
+            d*=4;
+            String string = df2.format(d);
+            d = Double.parseDouble(string);
+            d/=4d;
+            score=df.format(d);
+            passed=d>=12;
+        }
+    }
 }

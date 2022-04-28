@@ -98,8 +98,13 @@ public class LoginPanel extends JPanel {
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"The captcha is wrong");
                 updateCaptcha();
                 clearText();
-            }else if(Controller.LoginButton(name,password)==null){
-                JOptionPane.showMessageDialog(MainFrame.mainFrame,"Username or password is not valid");
+            }else if(Controller.LoginButton(name,password)==null) {
+                JOptionPane.showMessageDialog(MainFrame.mainFrame, "Username or password is not valid");
+                updateCaptcha();
+                clearText();
+            }else if(Controller.LoginButton(name,password) instanceof Student &&
+                    ((Student) Controller.LoginButton(name,password)).status== Student.Status.WITHDRAW_FROM_EDUCATION){
+                JOptionPane.showMessageDialog(MainFrame.mainFrame, "Username or password is not valid");
                 updateCaptcha();
                 clearText();
             }else {

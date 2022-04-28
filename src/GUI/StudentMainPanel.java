@@ -50,7 +50,6 @@ public class StudentMainPanel extends UserMainPanel {
             this.setOpaque(true);
             this.setBorder(BorderFactory.createDashedBorder(Color.black));
             this.setFont(font);
-
         }
     }
 

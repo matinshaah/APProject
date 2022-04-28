@@ -32,26 +32,35 @@ public class StudentMenuBar extends UserMenuBar{
         super.setListeners();
         courseList.addActionListener(e -> new CoursesListPanel(user,lastLogin));
         teacherList.addActionListener(e -> new TeacherListPanel(user,lastLogin));
+        minor.addActionListener(e -> new MinorPanel(user,lastLogin));
+        recommendation.addActionListener(e-> new RecommendPanel(user,lastLogin));
+        eduCertificate.addActionListener(e-> new EduCertificatePanel(user,lastLogin));
+        thesisDefense.addActionListener(e-> new ThesisDefensePanel(user,lastLogin));
+        dormitory.addActionListener(e->new DormitoryPanel(student,lastLogin));
+        withdraw.addActionListener(e-> new WithdrawPanel(student,lastLogin));
+        tempScores.addActionListener(e-> new StudentTempScoresPanel(user,lastLogin));
+        educationalStatus.addActionListener(e->new StudentEduStatusPanel(user,lastLogin));
+
     }
 
     protected void setMenuBar(){
         super.setMenuBar();
         reportCard.add(educationalStatus);
-        setApplications();
+        setRequests();
     }
 
-    private void setApplications(){
-        applications.add(eduCertificate);
+    private void setRequests(){
+        requests.add(eduCertificate);
         if(student.grade== Grade.BS){ //karshenasi
-            applications.add(recommendation);
-            applications.add(minor);
+            requests.add(recommendation);
+            requests.add(minor);
         }else if(student.grade == Grade.MS ){  //arshad
-            applications.add(recommendation);
-            applications.add(dormitory);
+            requests.add(recommendation);
+            requests.add(dormitory);
         }else { //doctora
-            applications.add(thesisDefense);
+            requests.add(thesisDefense);
         }
-        applications.add(withdraw);
+        requests.add(withdraw);
     }
 
 }

@@ -76,5 +76,17 @@ public class Teacher extends User{
         }
         return null;
     }
-
+    public static Teacher getTeacherByID(String id){
+        for (Teacher t :
+                list) {
+            if(id.equals(t.id+"")) return t;
+        }
+        return null;
+    }
+    public static void addCourse(Teacher teacher,Course course){
+        if(! teacher.courses.contains(course)){
+            teacher.courses.add(course);
+            course.teachers.add(teacher);
+        }
+    }
 }

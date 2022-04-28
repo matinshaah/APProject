@@ -1,19 +1,27 @@
 package Models;
 
+import GUI.MainFrame;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 
 public class Course {
+    public static int CurrentTerm=14002;
     public static ArrayList<Course> courseList = new ArrayList<>();
     public AbsCourse absCourse;
     public int total,id;
-    public HashSet<Student> students;
+    public ArrayList<Student> students;
     public HashSet<Teacher> teachers;
     public int term;
     public String classTime,examTime;
-    public Course(int term,int total,AbsCourse absCourse,HashSet<Teacher> teachers,HashSet<Student> students,String classTime){
+    public ScoreStatus status=ScoreStatus.NotGiven;
+    public enum ScoreStatus{
+        NotGiven,
+        Temporary,
+        Final
+    }
+    public Course(int term,int total,AbsCourse absCourse,HashSet<Teacher> teachers,ArrayList<Student> students,String classTime){
         courseList.add(this);
         this.classTime=classTime;
         this.id=Integer.parseInt(term+""+absCourse.id);
@@ -25,14 +33,66 @@ public class Course {
         this.teachers= teachers;
         if(absCourse.department!=null) absCourse.department.courses.add(this);
     }
-    public Course(int term,int total,AbsCourse absCourse,HashSet<Teacher> teachers,HashSet<Student> students,String classTime,String examTime){
+    public Course(int term,int total,AbsCourse absCourse,HashSet<Teacher> teachers,ArrayList<Student> students,String classTime,String examTime){
         this(term, total, absCourse, teachers, students, classTime);
         this.examTime=examTime;
     }
 
-    public static ArrayList<Course> sortedList(ArrayList<Course> list){
-        list.sort(new SortCompare());
+    public static ArrayList<Course> getCurrentTermCourses(ArrayList<Course> courses){
+        ArrayList<Course> list = new ArrayList<>();
+        for (Course c :
+                courses) {
+            if(c.term== CurrentTerm) list.add(c);
+        }
         return list;
+    }
+    public double getCourseAverage(){
+        if(this.status==ScoreStatus.NotGiven) return 0;
+        ArrayList<Double> scores= new ArrayList<>();
+        for (Student s :
+                students) {
+            scores.add(Double.parseDouble(s.scores.get(id + "").score));
+        }
+        return average(scores);
+    }
+    public double getCoursePassAverage(){
+        if(this.status==ScoreStatus.NotGiven) return 0;
+        ArrayList<Double> scores= new ArrayList<>();
+        for (Student s :
+                students) {
+            double d =Double.parseDouble(s.scores.get(id + "").score);
+            if(d>=12) scores.add(d);
+        }
+        return average(scores);
+    }
+    public int getPassedNumber(){
+        if(this.status==ScoreStatus.NotGiven) return 0;
+        int counter=0;
+        for (Student s :
+                students) {
+            double d =Double.parseDouble(s.scores.get(id + "").score);
+            if(d>=12) counter++;
+        }
+        return counter;
+    }
+    public int getFailedNumber(){
+        if(this.status==ScoreStatus.NotGiven) return 0;
+        return students.size()-getPassedNumber();
+    }
+
+    public static double average(ArrayList<Double> list){
+        double average =0;
+        for (Double d :
+             list) {
+            average+=d;
+        }
+        if(list.size()==0) average =0;
+        else average/=list.size();
+        return average;
+    }
+
+    public static void sortedList(ArrayList<Course> list){
+        list.sort(new SortCompare());
     }
 
 
@@ -46,4 +106,5 @@ public class Course {
             return a.examTime.compareTo(b.examTime);
         }
     }
+
 }

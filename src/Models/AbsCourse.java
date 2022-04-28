@@ -1,5 +1,7 @@
 package Models;
 
+import GUI.MainFrame;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -24,8 +26,6 @@ public class AbsCourse {
         idCounter++;
         this.id=idCounter+10000;
     }
-
-
 
     public static AbsCourse getAbsCourseByName(String name){
         for (AbsCourse absCourse:

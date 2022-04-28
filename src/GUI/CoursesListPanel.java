@@ -26,6 +26,7 @@ public class CoursesListPanel extends UserMainPanel{
         this.add(filter);
         filter.setBounds(30,150,100,30);
         filter.setOpaque(true);
+        filter.setBorder(BorderFactory.createLineBorder(Color.black));
     }
     private  void  updatePane(){
         if(pane!= null) this.remove(pane);
@@ -72,44 +73,41 @@ public class CoursesListPanel extends UserMainPanel{
     }
     protected void filteredCourses(String filter,String detail,ArrayList<Course> list){
         MainFrame.mainFrame.update();
-//        ArrayList<Course> list=new ArrayList<>();
-        if(list==Course.courseList) {
-            list = new ArrayList<>();
+        ArrayList<Course> newList=new ArrayList<>();
             switch (filter) {
                 case "none":
-                    list = Course.courseList;
+                    newList = list;
                     break;
                 case "department":
                     for (Course c :
-                            Course.courseList) {
+                            list) {
                         if (c.absCourse.department.name.equals(detail))
-                            list.add(c);
+                            newList.add(c);
                     }
                     break;
                 case "term":
                     for (Course c :
-                            Course.courseList) {
+                            list) {
                         if ((c.term + "").equals(detail))
-                            list.add(c);
+                            newList.add(c);
                     }
                     break;
                 case "credit":
                     for (Course c :
-                            Course.courseList) {
+                            list) {
                         if ((c.absCourse.credit + "").equals(detail))
-                            list.add(c);
+                            newList.add(c);
                     }
                     break;
                 case "grade":
                     Grade grade = Grade.getGradeByName(detail);
                     for (Course c :
-                            Course.courseList) {
-                        if (c.absCourse.grade == grade) list.add(c);
+                            list) {
+                        if (c.absCourse.grade == grade) newList.add(c);
                     }
                     break;
             }
-        }
-        setData(list);
+        setData(newList);
         updatePane();
     }
 

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class UserMenuBar extends JMenuBar {
     User user;
     LocalDateTime lastLogin;
-    protected MyJMenu registration,educationalService,reportCard,applications;
+    protected MyJMenu registration,educationalService,reportCard,requests;
     protected MyMenuItem profile;
     protected MyMenuItem courseList,teacherList,weeklySchedule,examList,tempScores;
     final private MyMenuItem mainPage = new MyMenuItem("Main Page"),exit = new MyMenuItem("Log out");
@@ -29,7 +29,7 @@ public class UserMenuBar extends JMenuBar {
         teacherList = new MyMenuItem("Teachers List");
         weeklySchedule = new MyMenuItem("Weekly Schedule");
         examList = new MyMenuItem("Exam List");
-        applications = new MyJMenu("Applications");
+        requests = new MyJMenu("Requests");
         tempScores = new MyMenuItem("Temporary Scores");
         profile = new MyMenuItem("User Profile");
     }
@@ -47,7 +47,7 @@ public class UserMenuBar extends JMenuBar {
         this.add(educationalService);
         educationalService.add(weeklySchedule);
         educationalService.add(examList);
-        educationalService.add(applications);
+        educationalService.add(requests);
         this.add(reportCard);
         reportCard.add(tempScores);
         this.add(profile);
@@ -79,5 +79,6 @@ public class UserMenuBar extends JMenuBar {
         });
         weeklySchedule.addActionListener(e -> new WeeklySchedulePanel(user,lastLogin));
         examList.addActionListener(e -> new WeeklySchedulePanel(user,lastLogin));
+
     }
 }

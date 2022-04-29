@@ -1,0 +1,42 @@
+newDepartment/  }name:Math
+newDepartment/ }name:Physic
+newDepartment/ }name:CS
+newDepartment/ }name:CE
+newDepartment/ }name:EE
+newAbsCourse/ }name:BP   }credit:4   }grade:BS    }preCourses:     }department:Math
+newAbsCourse/ }name:AP   }credit:4   }grade:BS    }preCourses:BP   }department:Math
+
+newCourse/   }term:14002  }total:100      }absCourseID:10001   }teachers:         }classTime:Thurs,Sun-17:00-19:00    }examTime:2022/5/20 09:00
+
+newTeacher/  }name:Khazaie  }password:1     }nationalCode:1   }department:Math      }degree:assistant professor     }email:kjskf  }phoneNumber:1  }imagePath:src/resources/Images/defaultProfile.png
+newTeacher/  }name:Jalili  }password:1     }nationalCode:3   }department:Math      }degree:assistant professor     }email:kjskf  }phoneNumber:1  }imagePath:src/resources/Images/defaultProfile.png   }hkhkh:true
+newTeacher/  }name:Physic teacher  }password:1     }nationalCode:3   }department:Physic      }degree:assistant professor     }email:kjskf  }phoneNumber:1  }imagePath:src/resources/Images/defaultProfile.png   }hkhkh:true
+newTeacher/  }name:EE teacher  }password:1     }nationalCode:3   }department:EE      }degree:assistant professor     }email:kjskf  }phoneNumber:1  }imagePath:src/resources/Images/defaultProfile.png   }hkhkh:true
+newTeacher/  }name:CE teacher  }password:1     }nationalCode:3   }department:CE      }degree:assistant professor     }email:kjskf  }phoneNumber:1  }imagePath:src/resources/Images/defaultProfile.png   }hkhkh:true
+newTeacher/  }name:CS teacher  }password:1     }nationalCode:3   }department:CS      }degree:assistant professor     }email:kjskf  }phoneNumber:1  }imagePath:src/resources/Images/defaultProfile.png   }hkhkh:true
+newStudent/  }name:Matin  }password:1   }nationalCode:2  }department:Math    }enteringYear:99  }grade:BS    }supervisor:10001   }status:studying   }imagePath:src/resources/Images/defaultProfile.png }email:shahnaziamirmatin@gamil.com   }phoneNumber:1235
+newRequest/  }type:minor    }student:99000001  }department:Physic
+student/	}id:99000001	}name:Matin	}nationalCode:12345667979676	}grade:BS	}supervisor:10001	}status:studying	}phoneNumber:3534343	}imagePath:src/resources/Images/defaultProfile.png	}email:,n,n,nshahnaziamirmatin@gamil.com
+
+teacher/	}id:10002	}name:Jalili	}nationalCode:3	}degree:assistant professor	}phoneNumber:1	}imagePath:src/resources/Images/defaultProfile.png	}email:jalili@Gmail.com
+changePassword/	}id:10002	}newPassword:d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35
+newTeacher/	}name:mirsadeghi	}password:1	}nationalCode:1234	}department:CS	}degree:assistant professor	}email:mirsadeghi@gmail.com	}phoneNumber:1234	}imagePath:src/resources/Images/defaultProfile.png
+setEVC/	}id:10001
+teacher/	}id:10001	}name:Khazaie	}nationalCode:1	}degree:assistant professor	}phoneNumber:1	}imagePath:src/resources/Images/defaultProfile.png	}email:khazaie@mail.com
+newCourse/	}term:14002	}total:150	}absCourse:10002	}teachers:mirsadeghi	}classTime:Thurs,Sun-17:00-19:00	}examTime:2022/05/15 09:00
+course/	}id:1400210001	}name:BP	}credit:4	}preCourses:	}grade:BS	}classTime:00-19:00	}term:14002	}total:100	}teachers:Khazaie	}examTime:2022/05/20 09:15
+course/	}id:1400210001	}name:BP	}credit:4	}preCourses:	}grade:BS	}classTime:17:00-19:00	}term:14002	}total:100	}teachers:Khazaie,	}examTime:2022/05/20 09:15
+newStudent/	}name:ali	}password:1	}nationalCode:145	}department:Math	}enteringYear:99	}grade:BS	}supervisor:10003	}status:studying	}imagePath:src/resources/Images/defaultProfile.png	}email:-	}phoneNumber:12345
+studentAddCourse/	}id:99000001	}courseID:1400210001
+studentAddCourse/	}id:99000002	}courseID:1400210001
+makeFinal/	}courseID:1400210001	}1
+setScore/	}studentID:99000001	}courseID:1400210001	}score:12
+setScore/	}studentID:99000002	}courseID:1400210001	}score:13
+setObjection/	}studentID:99000001	}courseID:1400210001	}objectionText:jgkjgk
+newRequest/	}type:eduCertificate	}studentID:99000001
+newRequest/	}type:recommend	}studentID:99000001	}teacherID:10001
+newRequest/	}type:minor	}studentID:99000001	}department:EE
+course/	}id:1400210002	}name:AP	}credit:4	}preCourses:	}grade:BS	}classTime:00-19:00	}term:14002	}total:150	}teachers:mirsadeghi,Khazaie	}examTime:2002/06/15 15:56
+makeFinal/	}courseID:1400210001	}2
+course/	}id:1400210001	}name:BP	}credit:4	}preCourses:	}grade:BS	}classTime:thurs,sun 17:00-19:00	}term:14002	}total:100	}teachers:Khazaie,	}examTime:2022/05/20 09:15
+course/	}id:1400210002	}name:AP	}credit:4	}preCourses:	}grade:BS	}classTime:Sat,Mon 15:00-19:00	}term:14002	}total:150	}teachers:Khazaie,	}examTime:2002/06/15 15:56

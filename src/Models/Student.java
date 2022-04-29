@@ -1,5 +1,7 @@
 package Models;
 
+import resources.SavingData;
+
 import java.awt.*;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -29,22 +31,29 @@ public class Student extends User{
             }
         }
     }
-    public Student(String name, String password, String nationalCode, Department department , ArrayList<Course> courses,int enteringYear,Grade grade,Teacher supervisor,Status status) throws NoSuchAlgorithmException {
+    public Student(String name, String password, String nationalCode, Department department, ArrayList<Course> courses, int enteringYear, Grade grade, Teacher supervisor, Status status) throws NoSuchAlgorithmException {
         this(name, password, nationalCode, department, courses, enteringYear, grade);
         this.supervisor=supervisor;
         this.status=status;
     }
     public Student(String name, String password, String nationalCode, Department department , ArrayList<Course> courses,int enteringYear,Grade grade,Teacher supervisor,Status status,String imagePath,String email,String phoneNumber) throws NoSuchAlgorithmException {
         this(name, password, nationalCode, department, courses, enteringYear, grade, supervisor, status);
+//        String str = "newStudent/\t{name:"+name+"\t{password:"+password+"\t{nationalCode:"+nationalCode+
+//                "\t{department:"+department.name+"\t{enteringYear:"+enteringYear+
+//                "\t{grade:"+grade+"\t{supervisor:"+supervisor.id+"\t{status:"+status.name+"\t{imagePath:"+imagePath+
+//                "\t{email:"+email+"\t{phoneNumber:"+phoneNumber;
+//        SavingData.addToFile(str);
         this.image=imagePath;
         this.email=email;
         this.phoneNumber=phoneNumber;
     }
     public static void addCourse(Student student,Course c){
-        if(! student.courses.contains(c)){
+        if(student.courses!=null&&! student.courses.contains(c)){
             student.courses.add(c);
             student.scores.put(c.id+"",new Score());
             c.students.add(student);
+//            String str ="studentAddCourse/"+"\t}id:"+student.id+"\t}courseID:"+c.id;
+//            SavingData.addToFile(str);
         }
     }
 
@@ -108,5 +117,13 @@ public class Student extends User{
             score=df.format(d);
             passed=d>=12;
         }
+    }
+    public static Student getStudentById(String id){
+        for (User u :
+                User.userList) {
+            if(id.equals(u.id+"")&&u instanceof Student)
+                return (Student) u;
+        }
+        return null;
     }
 }

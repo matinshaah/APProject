@@ -34,10 +34,13 @@ public class Teacher extends User{
         this(name, password, nationalCode, department, courses);
         this.degree=degree;
     }
-    public Teacher(String name, String password, String nationalCode, Department department, ArrayList<Course> courses,Degree degree,boolean isEVC,boolean isDC) throws NoSuchAlgorithmException {
+    public Teacher(String name, String password, String nationalCode, Department department, ArrayList<Course> courses,Degree degree,boolean isEVC,boolean isDC, String email, String phoneNumber, String imagePath) throws NoSuchAlgorithmException {
         this(name, password, nationalCode, department, courses, degree);
         this.isDC=isDC;
         this.isEVC=isEVC;
+        this.email=email;
+        this.phoneNumber=phoneNumber;
+        this.image=imagePath;
         if(isDC) department.dc=this;
         if(isEVC) department.evc=this;
     }

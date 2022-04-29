@@ -15,8 +15,8 @@ public class Test {
         Course AP13982 = new Course(13982,100,AP,new HashSet<>(),new ArrayList<>(),"Tuesday,Sunday 15:00-17:00","2022/5/20 08:59");
 
 
-        Teacher evc = new Teacher("Khazaie","1","0410978",math,new ArrayList<>(), Teacher.Degree.ASSISTANT_PROFESSOR,true,false);
-        Teacher boss = new Teacher("Jalili","1","0414336",math,new ArrayList<>(), Teacher.Degree.ASSOCIATE_PROFESSOR,false,true);
+        Teacher evc = new Teacher("Khazaie","1","0410978",math,new ArrayList<>(), Teacher.Degree.ASSISTANT_PROFESSOR,true,false,"","","");
+        Teacher boss = new Teacher("Jalili","1","0414336",math,new ArrayList<>(), Teacher.Degree.ASSOCIATE_PROFESSOR,false,true,"","","");
         evc.email="Khazaie@sharif.edu";
         boss.email="Jalili@sharif.edu";
         Teacher.addCourse(evc,AP14002);
@@ -29,8 +29,8 @@ public class Test {
 //        me.scores.get(AP14002.id+"").setScore("19.0");
         AP14002.teachers.add(evc);
 
-        Teacher Pevc = new Teacher("PKhazaie","1","P0410978",physic,new ArrayList<>(), Teacher.Degree.PROFESSOR,true,false);
-        Teacher Pboss = new Teacher("PJalili","1","P0414336",physic,new ArrayList<>(), Teacher.Degree.ASSOCIATE_PROFESSOR,false,true);
+        Teacher Pevc = new Teacher("PKhazaie","1","P0410978",physic,new ArrayList<>(), Teacher.Degree.PROFESSOR,true,false,"","","");
+        Teacher Pboss = new Teacher("PJalili","1","P0414336",physic,new ArrayList<>(), Teacher.Degree.ASSOCIATE_PROFESSOR,false,true,"","","");
 
         Student arshad = new Student("slam","1","1",physic,new ArrayList<>(),98,Grade.MS,Pevc, Student.Status.STUDYING);
         Student.addCourse(arshad,AP13992);

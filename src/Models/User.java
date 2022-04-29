@@ -33,7 +33,8 @@ public class  User {
         this.password=hashPassword(password);
         this.nationalCode = nationalCode;
         this.department= department;
-        this.courses=courses;
+//        this.courses=courses!=null?courses:new ArrayList<>();
+        this.courses=new ArrayList<>();
         this.image= "src/resources/Images/defaultProfile.png";
     }
     public static String hashPassword (String password) throws NoSuchAlgorithmException {

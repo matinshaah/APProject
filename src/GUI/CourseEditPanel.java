@@ -6,12 +6,14 @@ import Models.Course;
 import Models.Teacher;
 import Models.User;
 import resources.MasterLogger;
+import resources.SavingData;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class CourseEditPanel extends UserMainPanel{
     JButton saveButton,delete;
@@ -138,6 +140,10 @@ public class CourseEditPanel extends UserMainPanel{
             MasterLogger.getInstance().log("the course with id "+course.id+" deleted",false,this.getClass());
             JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course deleted successfully");
             Controller.removeCourse(course);
+            ArrayList<String> str = new ArrayList<>();
+            str.add("removeCourse");
+            str.add("id:"+course.id);
+            SavingData.addToFile(str);
             new EVCCoursePanel(user,lastLogin);
         });
     }

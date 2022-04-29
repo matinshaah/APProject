@@ -1,8 +1,9 @@
 package Controller;
 
-import GUI.MainFrame;
+
 import Models.*;
 import resources.MasterLogger;
+import resources.SavingData;
 
 import javax.swing.*;
 import java.io.File;
@@ -41,6 +42,11 @@ public class Controller {
         }
         try {
             user.password=User.hashPassword(newPass);
+            ArrayList<String> str = new ArrayList<>();
+            str.add("changePassword");
+            str.add("id:"+user.id);
+            str.add("newPassword:"+user.password);
+            SavingData.addToFile(str);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -63,6 +69,12 @@ public class Controller {
         else {
             new Minor(student,secondDep);
             MasterLogger.getInstance().log("new minor req successful",false,Controller.class);
+            ArrayList<String> str = new ArrayList<>();
+            str.add("newRequest");
+            str.add("type:"+"minor");
+            str.add("studentID:"+student.id);
+            str.add("department:"+secDep);
+            SavingData.addToFile(str);
         }
         return true;
     }
@@ -75,6 +87,12 @@ public class Controller {
         else {
             new Recommendation(student,teacher);
             MasterLogger.getInstance().log("new recommend req  successful",false,Controller.class);
+            ArrayList<String> str = new ArrayList<>();
+            str.add("newRequest");
+            str.add("type:"+"recommend");
+            str.add("studentID:"+student.id);
+            str.add("teacherID:"+teacherID);
+            SavingData.addToFile(str);
         }
         return true;
     }
@@ -86,6 +104,11 @@ public class Controller {
                 return false;
             }
         }
+        ArrayList<String> str = new ArrayList<>();
+        str.add("newRequest");
+        str.add("type:"+"eduCertificate");
+        str.add("studentID:"+student.id);
+        SavingData.addToFile(str);
         MasterLogger.getInstance().log("new edu certificate req  successful",false,Controller.class);
         new EduCertificate(student);
         return true;
@@ -98,6 +121,11 @@ public class Controller {
                 return false;
             }
         }
+        ArrayList<String> str = new ArrayList<>();
+        str.add("newRequest");
+        str.add("type:"+"thesis");
+        str.add("studentID:"+student.id);
+        SavingData.addToFile(str);
         MasterLogger.getInstance().log("new thesis defense req  successful",false,Controller.class);
         new ThesisDefense(student);
         return true;
@@ -110,6 +138,11 @@ public class Controller {
                 return false;
             }
         }
+        ArrayList<String> str = new ArrayList<>();
+        str.add("newRequest");
+        str.add("type:"+"dormitory");
+        str.add("studentID:"+student.id);
+        SavingData.addToFile(str);
         MasterLogger.getInstance().log("new dormitory req  successful",false,Controller.class);
         new Dormitory(student);
         return true;
@@ -122,25 +155,49 @@ public class Controller {
                 return false;
             }
         }
+        ArrayList<String> str = new ArrayList<>();
+        str.add("newRequest");
+        str.add("type:"+"withdraw");
+        str.add("studentID:"+student.id);
+        SavingData.addToFile(str);
         MasterLogger.getInstance().log("new withdraw req successful",false,Controller.class);
         new Withdraw(student);
         return true;
     }
     public static void replyReq(Request request,Teacher teacher,int isAccepted){//1)accepted 2)rejected
+        ArrayList<String> str = new ArrayList<>();
+        str.add("request");
+        str.add("id:"+request.id);
         if(request instanceof Minor){
             Minor minor = (Minor) request;
-            if(minor.secondDep==teacher.department) minor.secondAccepted=isAccepted;
-            else minor.firstAccepted=isAccepted;
+            if(minor.secondDep==teacher.department) {
+                minor.secondAccepted=isAccepted;
+                str.add("second:2"+isAccepted);
+            }
+            else {
+                minor.firstAccepted=isAccepted;
+                str.add("first:1"+isAccepted);
+            }
             minor.checkResult();
         }else {
             request.result=isAccepted;
-            if(request instanceof Withdraw && isAccepted==1) request.student.status= Student.Status.WITHDRAW_FROM_EDUCATION;
+            if(request instanceof Withdraw && isAccepted==1) {
+                request.student.status= Student.Status.WITHDRAW_FROM_EDUCATION;
+            }
         }
+        str.add("result:"+request.result);
+        SavingData.addToFile(str);
     }
     public static int recordObjection(Student student,String courseID,String objectionText){//0)empty objection 1)success 2)has already object
         if(objectionText.equals("")) return 0;
         if(student.scores.get(courseID).objectionText.equals("")) {
             student.scores.get(courseID).objectionText=objectionText;
+            ArrayList<String> str = new ArrayList<>();
+            str.add("setObjection");
+            str.add("studentID:"+student.id);
+            str.add("courseID:"+courseID);
+            str.add("objectionText:"+objectionText);
+            SavingData.addToFile(str);
             return 1;
         }else return 2;
     }
@@ -158,6 +215,12 @@ public class Controller {
         if (text.equals("")) return 0;
         if (student.scores.get(course.id + "").objectionAnswer.equals("")) {
             student.scores.get(course.id+"").objectionAnswer=text;
+            ArrayList<String> str = new ArrayList<>();
+            str.add("setObjectionAnswer");
+            str.add("studentID:"+student.id);
+            str.add("courseID:"+course.id);
+            str.add("objectionText:"+text);
+            SavingData.addToFile(str);
             return 1;
         }else return 2;
     }
@@ -169,11 +232,22 @@ public class Controller {
             if (!isValidScore(score)) return 3;
         }
         course.status= Course.ScoreStatus.Temporary;
+        ArrayList<String> string = new ArrayList<>();
+        string.add("makeFinal");
+        string.add("courseID:"+course.id);
+        string.add("1");//1temp 2:final
+        SavingData.addToFile(string);
         for (int i = 0; i < table.getRowCount(); i++) {
             String score = (table.getValueAt(i, 3) + "").trim();
             String studentID =(table.getValueAt(i, 1) + "").trim();
             Student student = (Student) findUserById(studentID);
             student.scores.get(course.id+"").setScore(score);
+            ArrayList<String> str = new ArrayList<>();
+            str.add("setScore");
+            str.add("studentID:"+student.id);
+            str.add("courseID:"+course.id);
+            str.add("score:"+score);
+            SavingData.addToFile(str);
         }
         return 1;
     }
@@ -181,6 +255,11 @@ public class Controller {
         if(course.status== Course.ScoreStatus.NotGiven) return 0;
         if(course.status== Course.ScoreStatus.Final) return 2;
         course.status= Course.ScoreStatus.Final;
+        ArrayList<String> string = new ArrayList<>();
+        string.add("makeFinal");
+        string.add("courseID:"+course.id);
+        string.add("2");//1temp 2:final
+        SavingData.addToFile(string);
         for (int i = 0; i < table.getRowCount(); i++) {
 //            String score = (table.getValueAt(i, 3) + "").trim();
             String studentID =(table.getValueAt(i, 1) + "").trim();
@@ -200,7 +279,7 @@ public class Controller {
     public static int setEVC(Teacher teacher){
         if(teacher.isDC) return 1;
         if(teacher.isEVC) return 2;
-        teacher.department.evc.isEVC=false;
+        if(teacher.department.evc!=null) teacher.department.evc.isEVC=false;
         teacher.department.evc=teacher;
         teacher.isEVC=true;
         return 0;
@@ -244,19 +323,50 @@ public class Controller {
                      new Student(name, "1", nationalCode, Department.getDepartmentByName(department), new ArrayList<>(),
                             Integer.parseInt(enteringYear), Grade.getGradeByName(grade),Teacher.getTeacherByName(supervisor),
                              Student.Status.getStatusByName(status),imagePath,email,phoneNumber);
+                    ArrayList<String> str = new ArrayList<>();
+                    Teacher teacher =Teacher.getTeacherByName(supervisor);
+                    str.add("newStudent");
+                    str.add("name:"+name);
+                    str.add("password:"+"1");
+                    str.add("nationalCode:"+nationalCode);
+                    str.add("department:"+department);
+                    str.add("enteringYear:"+enteringYear);
+                    str.add("grade:"+grade);
+                    str.add(teacher==null?"supervisor:":"supervisor:"+teacher.id+"");
+                    str.add("status:"+status);
+                    str.add("imagePath:"+imagePath);
+                    str.add("email:"+email);
+                    str.add("phoneNumber:"+phoneNumber);
+
+                    SavingData.addToFile(str);
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
         }else {
             student.name=name;
             student.nationalCode=nationalCode;
-            student.department=Department.getDepartmentByName(department);
+//            student.department=Department.getDepartmentByName(department);
             student.grade=Grade.getGradeByName(grade);
+            Teacher teacher =Teacher.getTeacherByName(supervisor);
             student.supervisor=Teacher.getTeacherByName(supervisor);
             student.status= Student.Status.getStatusByName(status);
             student.phoneNumber=phoneNumber;
             student.image=imagePath;
             student.email=email;
+            ArrayList<String> str = new ArrayList<>();
+            str.add("student");
+            str.add("id:"+student.id);
+            str.add("name:"+name);
+            str.add("nationalCode:"+nationalCode);
+//            str.add("department:"+department);
+            str.add("grade:"+grade);
+            str.add(teacher==null?"supervisor:":"supervisor:"+teacher.id+"");
+            str.add("status:"+status);
+            str.add("phoneNumber:"+phoneNumber);
+            str.add("imagePath:"+imagePath);
+            str.add("email:"+email);
+
+            SavingData.addToFile(str);
         }
         return "";
     }
@@ -287,6 +397,19 @@ public class Controller {
             try {
                 new Teacher(name,"1",nationalCode,Department.getDepartmentByName(department),
                         Teacher.Degree.getDegreeByName(degree),email,phoneNumber,imagePath);
+
+                ArrayList<String> str = new ArrayList<>();
+                str.add("newTeacher");
+                str.add("name:"+name);
+                str.add("password:"+"1");
+                str.add("nationalCode:"+nationalCode);
+                str.add("department:"+department);
+                str.add("degree:"+degree);
+                str.add("email:"+email);
+                str.add("phoneNumber:"+phoneNumber);
+                str.add("imagePath:"+imagePath);
+                SavingData.addToFile(str);
+
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
@@ -297,6 +420,17 @@ public class Controller {
             teacher.email=email;
             teacher.phoneNumber=phoneNumber;
             teacher.image=imagePath;
+
+            ArrayList<String> str = new ArrayList<>();
+            str.add("teacher");
+            str.add("id:"+teacher.id);
+            str.add("name:"+name);
+            str.add("nationalCode:"+nationalCode);
+            str.add("degree:"+degree);
+            str.add("phoneNumber:"+phoneNumber);
+            str.add("imagePath:"+imagePath);
+            str.add("email:"+email);
+            SavingData.addToFile(str);
         }
         return "";
     }
@@ -388,9 +522,42 @@ public class Controller {
                     }
                 }
             }
-            if(absCourse==null) absCourse =new AbsCourse(name,Integer.parseInt(credit),Department.getDepartmentByName(department),absCourses, Grade.getGradeByName(grade));
+            if(absCourse==null) {
+                absCourse =new AbsCourse(name,Integer.parseInt(credit),Department.getDepartmentByName(department),absCourses, Grade.getGradeByName(grade));
+                ArrayList<String> str = new ArrayList<>();
+                str.add("newAbsCourse");
+                str.add("name:"+name);
+                str.add("credit:"+credit);
+                str.add("grade:"+grade);
+                str.add("preCourses:"+preCourse);
+                str.add("department:"+department);
+                SavingData.addToFile(str);
+            }
             course=new Course(Integer.parseInt(term),Integer.parseInt(total),absCourse,teacherHashSet,new ArrayList<>(),classTime,examTime);
+            for (Teacher t:
+                    teacherHashSet) {
+                if(!t.courses.contains(course))t.courses.add(course);
+            }
+
+            ArrayList<String> str = new ArrayList<>();
+            str.add("newCourse");
+            str.add("term:"+term);
+            str.add("total:"+total);
+            str.add("absCourse:"+absCourse.id);
+            str.add("teachers:"+teachers);
+            str.add("classTime:"+classTime);
+            str.add("examTime:"+examTime);
+            SavingData.addToFile(str);
         }else {
+            for (Teacher t :
+                    Teacher.list) {
+                t.courses.remove(course);
+            }
+            for (Teacher t:
+                    teacherHashSet) {
+                if(!t.courses.contains(course))t.courses.add(course);
+            }
+
             course.absCourse.name=name;
             course.absCourse.credit=Integer.parseInt(credit);
             course.absCourse.preCourses=absCourses;
@@ -400,6 +567,21 @@ public class Controller {
             course.total=Integer.parseInt(total);
             course.teachers=teacherHashSet;
             course.examTime=examTime;
+
+            ArrayList<String> str = new ArrayList<>();
+            str.add("course");
+            str.add("id:"+course.id);
+            str.add("name:"+name);
+            str.add("credit:"+credit);
+            str.add("preCourses:"+preCourse);
+            str.add("grade:"+grade);
+            str.add("classTime:"+classTime);
+            str.add("term:"+term);
+            str.add("total:"+total);
+            str.add("teachers:"+teachers);
+            str.add("examTime:"+examTime);
+            SavingData.addToFile(str);
+
         }
         for (Teacher t :
                 Teacher.list) {

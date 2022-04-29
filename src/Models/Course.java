@@ -1,6 +1,6 @@
 package Models;
 
-import GUI.MainFrame;
+
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -25,6 +25,7 @@ public class Course {
         courseList.add(this);
         this.classTime=classTime;
         this.id=Integer.parseInt(term+""+absCourse.id);
+//        System.out.println(this.id);
         this.term= term;
         this.total= total;
         this.absCourse=absCourse;
@@ -105,5 +106,6 @@ public class Course {
             return a.examTime.compareTo(b.examTime);
         }
     }
+
 
 }

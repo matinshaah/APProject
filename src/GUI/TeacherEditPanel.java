@@ -6,12 +6,14 @@ import Models.User;
 import resources.ImageResource;
 import resources.MasterLogger;
 import resources.ResourceManager;
+import resources.SavingData;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class TeacherEditPanel extends UserMainPanel{
     Teacher teacher;
@@ -111,6 +113,10 @@ public class TeacherEditPanel extends UserMainPanel{
         MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         delete.addActionListener(e ->{
             if(Controller.removeTeacher(teacher)){
+                ArrayList<String> str = new ArrayList<>();
+                str.add("removeTeacher");
+                str.add("id:"+teacher.id);
+                SavingData.addToFile(str);
                 MasterLogger.getInstance().log("the teacher with id "+teacher.id+" is  deleted",false,this.getClass());
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"The teacher deleted successfully");
                 new DCTeacherPanel(user,lastLogin);
@@ -149,6 +155,10 @@ public class TeacherEditPanel extends UserMainPanel{
         promote.addActionListener(e -> {
             int state = Controller.setEVC(teacher);
             if(state==0){
+                ArrayList<String> str = new ArrayList<>();
+                str.add("setEVC");
+                str.add("id:"+teacher.id);
+                SavingData.addToFile(str);
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"The teacher is promoted successfully");
                 MasterLogger.getInstance().log("The teacher with id "+teacher.id+" is promoted successfully",false,this.getClass());
 

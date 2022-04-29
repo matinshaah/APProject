@@ -26,7 +26,6 @@ public class StudentTempScoresPanel extends UserMainPanel{
         updatePane();
         setListeners();
     }
-
     @Override
     protected void initCom() {
         super.initCom();

@@ -15,7 +15,7 @@ public class MainFrame extends JFrame {
 
     private void init(){
         this.setVisible(true);
-//        this.setResizable(false);
+        this.setResizable(false);
         this.setSize(new Dimension(1400, 800));
         this.setLocationRelativeTo(null);
         this.setLayout(null);

@@ -1,7 +1,5 @@
 package Models;
 
-import GUI.MainFrame;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -23,6 +21,10 @@ public class AbsCourse {
         this.department=department;
         this.grade=grade;
         idCounter++;
+        for (AbsCourse c :
+                list) {
+            if (c.id == idCounter) idCounter++;
+        }
         this.id=idCounter+10000;
     }
 
@@ -30,6 +32,13 @@ public class AbsCourse {
         for (AbsCourse absCourse:
              list) {
             if(absCourse.name.equals(name)) return absCourse;
+        }
+        return null;
+    }
+    public static AbsCourse getAbsCourseById(String id){
+        for (AbsCourse absCourse:
+                list) {
+            if(id.equals(absCourse.id+"")) return absCourse;
         }
         return null;
     }

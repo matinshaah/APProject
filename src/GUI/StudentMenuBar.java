@@ -3,6 +3,7 @@ package GUI;
 import Models.Grade;
 import Models.Student;
 import Models.User;
+import resources.MasterLogger;
 
 import java.time.LocalDateTime;
 
@@ -50,6 +51,7 @@ public class StudentMenuBar extends UserMenuBar{
     }
 
     private void setRequests(){
+        MasterLogger.getInstance().log("requests are set",false,this.getClass());
         requests.add(eduCertificate);
         if(student.grade== Grade.BS){ //karshenasi
             requests.add(recommendation);

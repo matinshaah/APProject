@@ -18,7 +18,6 @@ public class EVCMenuBar extends TeacherMenuBar{
         registerNewUser = new MyJMenu("Register New User");
         newTeacher = new MyMenuItem("New Teacher");
         newStudent = new MyMenuItem("New Student");
-
     }
     @Override
     protected void setMenuBar(){
@@ -27,7 +26,6 @@ public class EVCMenuBar extends TeacherMenuBar{
         registerNewUser.setOpaque(false);
         registerNewUser.add(newTeacher);
         registerNewUser.add(newStudent);
-
     }
     @Override
     protected void setNewRegistration(){

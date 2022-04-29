@@ -28,7 +28,6 @@ public class Student extends User{
                 c.students.add(this);
             }
         }
-        if(department!= null) this.department.students.add(this);
     }
     public Student(String name, String password, String nationalCode, Department department , ArrayList<Course> courses,int enteringYear,Grade grade,Teacher supervisor,Status status) throws NoSuchAlgorithmException {
         this(name, password, nationalCode, department, courses, enteringYear, grade);

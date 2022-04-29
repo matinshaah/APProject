@@ -4,6 +4,7 @@ package GUI;
 import Models.Department;
 import Models.Teacher;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -65,6 +66,7 @@ public class TeacherListPanel  extends UserMainPanel{
         filter.add(none); filter.add(department); filter.add(degree); filter.add(evc); filter.add(dc);
     }
     private void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         String[] column = {"name","department","degree","Email","phone number","ID"};
         table = new JTable(data,column);
         table.setFont(new Font("",Font.PLAIN,20));
@@ -104,12 +106,12 @@ public class TeacherListPanel  extends UserMainPanel{
                 }
                 break;
             case "department":
-//            for (Teacher t :
-//                    Teacher.list) {
-//                if (t.department.name.equals(detail))
-//                    list.add(t);
-//            }
-                list = Department.getDepartmentByName(detail).teachers;
+                for (Teacher t :
+                    Teacher.list) {
+                    if (t.department.name.equals(detail))
+                        list.add(t);
+                }
+//                list = Department.getDepartmentByName(detail).teachers;
                 break;
             default:
                 for (Teacher t :

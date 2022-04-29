@@ -2,6 +2,7 @@ package GUI;
 
 import Models.Student;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -49,6 +50,7 @@ public class StudentProfilePanel extends StudentEditPanel {
 
     @Override
     protected void initTable() {
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         table = new JTable();
         table.setBounds(275,150,800,450);
         table.setBackground(user.color);

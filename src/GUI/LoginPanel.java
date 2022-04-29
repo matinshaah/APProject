@@ -4,6 +4,7 @@ import Controller.Controller;
 import Models.*;
 import resources.Captcha;
 import resources.ImageResource;
+import resources.MasterLogger;
 import resources.ResourceManager;
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +28,7 @@ public class LoginPanel extends JPanel {
     }
 
     private void initPanel(){
+        MasterLogger.getInstance().log("panel initialized",false,this.getClass());
         MainFrame.mainFrame.getContentPane().removeAll();
         MainFrame.mainFrame.update();
         MainFrame.mainFrame.add(this);
@@ -35,6 +37,7 @@ public class LoginPanel extends JPanel {
     }
 
     private void initCom(){
+        MasterLogger.getInstance().log("panel components initialized",false,this.getClass());
         this.setLayout(null);
         this.add(username);
         this.add(password);
@@ -52,6 +55,7 @@ public class LoginPanel extends JPanel {
         loginButton.setBackground(Color.red);
     }
     private void align(){
+        MasterLogger.getInstance().log("panel components aligned",false,this.getClass());
         username.setBounds(400,250,200,40);
         password.setBounds(400,300,200,40);
         nameField.setBounds(550,250,400,40);
@@ -71,6 +75,7 @@ public class LoginPanel extends JPanel {
     }
 
     private void updateCaptcha(){
+        MasterLogger.getInstance().log("captcha updated",false,this.getClass());
         captchaCounter = (captchaCounter+1)%6;
         captchaImage.setIcon(new ImageIcon(Captcha.getCaptcha.get(captchaCounter).image));
         captchaNum=Captcha.getCaptcha.get(captchaCounter).string;
@@ -81,6 +86,7 @@ public class LoginPanel extends JPanel {
         passwordField.setText("");
     }
     private void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         loginButton.addActionListener(e -> {
             String name = nameField.getText();
             String password =null;
@@ -93,31 +99,39 @@ public class LoginPanel extends JPanel {
             String cap = captchaField.getText();
             if(name.equals("")||password==null||password.equals("")||cap.equals("")){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Please fill all fields");
+                MasterLogger.getInstance().log("empty fields",true,this.getClass());
                 updateCaptcha();
             }else if(! cap.equals(captchaNum)){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"The captcha is wrong");
+                MasterLogger.getInstance().log("wrong captcha",true,this.getClass());
                 updateCaptcha();
                 clearText();
             }else if(Controller.LoginButton(name,password)==null) {
                 JOptionPane.showMessageDialog(MainFrame.mainFrame, "Username or password is not valid");
+                MasterLogger.getInstance().log("Username or password is not valid",true,this.getClass());
                 updateCaptcha();
                 clearText();
             }else if(Controller.LoginButton(name,password) instanceof Student &&
                     ((Student) Controller.LoginButton(name,password)).status== Student.Status.WITHDRAW_FROM_EDUCATION){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame, "Username or password is not valid");
+                MasterLogger.getInstance().log("Username or password is not valid",true,this.getClass());
                 updateCaptcha();
                 clearText();
             }else {
                 User user = Controller.LoginButton(name,password);
                 if(user instanceof Student) {
                     MainFrame.mainFrame.menuBar=new StudentMenuBar(user,LocalDateTime.now());
+                    MasterLogger.getInstance().log("user with id "+user.id+" logged in",false,this.getClass());
                     new StudentMainPanel(user,LocalDateTime.now());
                 }
                 else {
                     new UserMainPanel(user,LocalDateTime.now());
-                    if(((Teacher) user).isEVC ) MainFrame.mainFrame.menuBar =(new EVCMenuBar(user,LocalDateTime.now()));
-    //                else if(((Teacher) user).isDC) MainFrame.mainFrame.menuBar =(new DCMenuBar(user,LocalDateTime.now()));
-                    else MainFrame.mainFrame.menuBar =(new TeacherMenuBar(user,LocalDateTime.now()));
+                    if(((Teacher) user).isEVC ) {
+                        MainFrame.mainFrame.menuBar =new EVCMenuBar(user,LocalDateTime.now());
+                    }
+                    else {
+                        MainFrame.mainFrame.menuBar =(new TeacherMenuBar(user,LocalDateTime.now()));
+                    }
                 }
                 MainFrame.mainFrame.setJMenuBar(MainFrame.mainFrame.menuBar);
             }

@@ -1,6 +1,8 @@
 package Controller;
 
+import GUI.MainFrame;
 import Models.*;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import java.io.File;
@@ -54,54 +56,73 @@ public class Controller {
     }
     public static boolean newMinorReq(Student student,String secDep){
         Department secondDep = Department.getDepartmentByName(secDep);
-        if(secondDep==null||secondDep==student.department) return false;
+        if(secondDep==null||secondDep==student.department){
+            MasterLogger.getInstance().log("new minor req not successful",false,Controller.class);
+            return false;
+        }
         else {
             new Minor(student,secondDep);
+            MasterLogger.getInstance().log("new minor req successful",false,Controller.class);
         }
         return true;
     }
     public static boolean newRecommendReq(Student student,String teacherID){
         Teacher teacher = Teacher.getTeacherByID(teacherID);
-        if(teacher==null) return false;
+        if(teacher==null) {
+            MasterLogger.getInstance().log("new recommend req not successful",false,Controller.class);
+            return false;
+        }
         else {
             new Recommendation(student,teacher);
+            MasterLogger.getInstance().log("new recommend req  successful",false,Controller.class);
         }
         return true;
     }
     public static boolean newEduCertificateReq(Student student){
         for (Request r :
                 Request.requests) {
-            if (r instanceof EduCertificate && r.student == student && r.result == 0)
+            if (r instanceof EduCertificate && r.student == student && r.result == 0) {
+                MasterLogger.getInstance().log("new edu certificate req not successful",false,Controller.class);
                 return false;
+            }
         }
-
+        MasterLogger.getInstance().log("new edu certificate req  successful",false,Controller.class);
         new EduCertificate(student);
         return true;
     }
     public static boolean newThesisDefenseReq(Student student){
         for (Request r :
                 Request.requests) {
-            if (r instanceof ThesisDefense && r.student == student && r.result == 0)
+            if (r instanceof ThesisDefense && r.student == student && r.result == 0){
+                MasterLogger.getInstance().log("new thesis defense req not successful",false,Controller.class);
                 return false;
+            }
         }
+        MasterLogger.getInstance().log("new thesis defense req  successful",false,Controller.class);
         new ThesisDefense(student);
         return true;
     }
     public static boolean newDormitoryReq(Student student){
         for (Request r :
                 Request.requests) {
-            if (r instanceof Dormitory && r.student == student)
+            if (r instanceof Dormitory && r.student == student){
+                MasterLogger.getInstance().log("new dormitory req not successful",false,Controller.class);
                 return false;
+            }
         }
+        MasterLogger.getInstance().log("new dormitory req  successful",false,Controller.class);
         new Dormitory(student);
         return true;
     }
     public static boolean newWithdrawReq(Student student){
         for (Request r :
                 Request.requests) {
-            if (r instanceof Withdraw && r.student == student)
+            if (r instanceof Withdraw && r.student == student){
+                MasterLogger.getInstance().log("new withdraw req not successful",false,Controller.class);
                 return false;
+            }
         }
+        MasterLogger.getInstance().log("new withdraw req successful",false,Controller.class);
         new Withdraw(student);
         return true;
     }
@@ -295,11 +316,17 @@ public class Controller {
         if(isNotNumeric(total)) return "total";
         if(isNotNumeric(term)) return "term";
         String[] teacher = teachers.split(",");
+        ArrayList<Teacher> list = new ArrayList<>();
+        for (Teacher t :
+                Teacher.list) {
+            if (t.department.name.equals(Department.getDepartmentByName(department).name))
+                list.add(t);
+        }
         for (String t :
                 teacher) {
             boolean b=false;
             for (Teacher teacher1:
-                 Department.getDepartmentByName(department).teachers) {
+                 list) {
                 if(t.equals(teacher1.name)){
                     b=true;
                     break;
@@ -309,11 +336,17 @@ public class Controller {
         }
         String[] pre = preCourse.split(",");
         if(! preCourse.equals("")) {
+            ArrayList<AbsCourse> absCourseList = new ArrayList<>();
+            for (AbsCourse a :
+                    AbsCourse.list) {
+                if(a.department==Department.getDepartmentByName(department))
+                    absCourseList.add(a);
+            }
             for (String p :
                     pre) {
                 boolean b = false;
                 for (AbsCourse c :
-                        Department.getDepartmentByName(department).absCourses) {
+                        absCourseList) {
                     if (c.name.equals(p)) {
                         b = true;
                         break;
@@ -339,8 +372,14 @@ public class Controller {
         }
         if(course==null){
             AbsCourse absCourse=null;
+            ArrayList<AbsCourse> absCourseList = new ArrayList<>();
             for (AbsCourse a :
-                    Department.getDepartmentByName(department).absCourses) {
+                    AbsCourse.list) {
+                if(a.department==Department.getDepartmentByName(department))
+                    absCourseList.add(a);
+            }
+            for (AbsCourse a :
+                    absCourseList) {
                 if(a.name.equals(name)) {
                     absCourse = a;
                     for (Course c :
@@ -399,7 +438,6 @@ public class Controller {
                 course.students) {
             s.courses.remove(course);
         }
-        course.absCourse.department.courses.remove(course);
         course.absCourse.courses.remove(course);
         Course.courseList.remove(course);
     }
@@ -423,6 +461,7 @@ public class Controller {
         try {
             d=Double.parseDouble(score);
         } catch (NumberFormatException e) {
+            MasterLogger.getInstance().log("invalid double format",true,Controller.class);
             return false;
         }
         return d>=0d&&d<=20d;
@@ -432,6 +471,7 @@ public class Controller {
         try {
             LocalDateTime.parse(dateStr, dateFormatter);
         } catch (DateTimeParseException e) {
+            MasterLogger.getInstance().log("invalid dateTime format",true,Controller.class);
             return false;
         }
         return true;

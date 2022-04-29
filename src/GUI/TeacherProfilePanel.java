@@ -2,6 +2,7 @@ package GUI;
 
 import Models.Teacher;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +47,7 @@ public class TeacherProfilePanel extends TeacherEditPanel{
     }
     @Override
     protected void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         super.setListeners();
         changePass.addActionListener(e-> new ChangePasswordPanel(user,LocalDateTime.now()));
         blue.addActionListener(e->{

@@ -5,6 +5,8 @@ import Models.Minor;
 import Models.Request;
 import Models.Student;
 import Models.User;
+import resources.MasterLogger;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -66,6 +68,7 @@ public class MinorPanel extends UserMainPanel{
         pane.setBounds(150,300,1000,300);
     }
     private void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         String[] column = {"type","name","student number","first department","second department","result"};
         table = new JTable(data,column);
         table.setFont(new Font("",Font.PLAIN,20));
@@ -101,10 +104,13 @@ public class MinorPanel extends UserMainPanel{
         }
     }
     private void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         newReq.addActionListener(e->{
             if(Controller.newMinorReq((Student) user,secDepField.getText())){
+                MasterLogger.getInstance().log("request registered",false,this.getClass());
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Your request successfully registered");
             }else {
+                MasterLogger.getInstance().log("department not found",true,this.getClass());
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Department not found");
             }
             new MinorPanel(user,lastLogin);

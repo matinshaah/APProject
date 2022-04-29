@@ -1,6 +1,8 @@
 package GUI;
 
 import Models.*;
+import resources.MasterLogger;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -112,6 +114,7 @@ public class CoursesListPanel extends UserMainPanel{
     }
 
     private void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         String[] column = {"Name","Department","Term","Credit","Teachers","ID","Prerequisite Courses","Total","CLass time","Grade","Exam time"};
         table = new JTable(data,column);
         table.setFont(new Font("",Font.PLAIN,20));

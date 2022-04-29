@@ -5,6 +5,7 @@ import Models.Withdraw;
 import Models.Request;
 import Models.Student;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -42,7 +43,8 @@ public class WithdrawPanel extends UserMainPanel{
         request.setBounds(150,250,120,40);
         newReq.setFocusable(false);
     }
-    private  void  updatePane(){
+    private void updatePane(){
+        MasterLogger.getInstance().log("pane is updated",false,this.getClass());
         if(pane!= null) this.remove(pane);
         initTable();
         pane = new JScrollPane(table);
@@ -52,6 +54,7 @@ public class WithdrawPanel extends UserMainPanel{
         pane.setBounds(150,300,1080,300);
     }
     private void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         String[] column = {"type","name","student number","result"};
         table = new JTable(data,column);
         table.setFont(new Font("",Font.PLAIN,20));
@@ -72,6 +75,7 @@ public class WithdrawPanel extends UserMainPanel{
         }
     }
     protected ArrayList<Withdraw> findRequests(){
+        MasterLogger.getInstance().log("list is found",false,this.getClass());
         ArrayList<Withdraw> userRequest = new ArrayList<>();
         for (Request request :
                 Request.requests) {
@@ -80,6 +84,7 @@ public class WithdrawPanel extends UserMainPanel{
         return userRequest;
     }
     protected void setData(ArrayList<Withdraw> list){
+        MasterLogger.getInstance().log("data is set",false,this.getClass());
         int size=list.size();
         data=new String[size][4];
         for (int i = 0; i < size; i++) {
@@ -95,10 +100,13 @@ public class WithdrawPanel extends UserMainPanel{
         }
     }
     protected void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         newReq.addActionListener(e->{
             if(Controller.newWithdrawReq((Student) user)) {
+                MasterLogger.getInstance().log("request registered",false,this.getClass());
                 JOptionPane.showMessageDialog(MainFrame.mainFrame, "Your request successfully registered");
             }else {
+                MasterLogger.getInstance().log("already registered",true,this.getClass());
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"You have already registered a request");
             }
             new WithdrawPanel(user, lastLogin);

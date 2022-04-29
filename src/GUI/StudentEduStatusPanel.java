@@ -3,6 +3,7 @@ package GUI;
 import Models.Course;
 import Models.Student;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -54,6 +55,7 @@ public class StudentEduStatusPanel extends UserMainPanel{
 
 
     private void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         String[] column = {"course id","course name","term","credit","score"};
         table = new JTable(data,column);
         table.setFont(new Font("",Font.PLAIN,20));

@@ -2,6 +2,8 @@ package GUI;
 
 import Controller.Controller;
 import Models.*;
+import resources.MasterLogger;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -60,6 +62,7 @@ public class TeacherRequestPanel extends UserMainPanel{
         pane.setBounds(150,160,1080,300);
     }
     private void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         String[] column = {"type","student name","student number","student department","request id","time"};
         table = new JTable(data,column);
         table.setFont(new Font("",Font.PLAIN,20));
@@ -113,10 +116,12 @@ public class TeacherRequestPanel extends UserMainPanel{
         }
     }
     protected void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         accept.addActionListener(e ->{
             Request r = Request.findReqByID(idField.getText());
             if(r!=null&&reqList.contains(r)){
                 Controller.replyReq(r,(Teacher) user,1);
+                MasterLogger.getInstance().log("request accepted",false,this.getClass());
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"The request is successfully accepted.");
             }else {
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Request not found.");
@@ -127,8 +132,10 @@ public class TeacherRequestPanel extends UserMainPanel{
             Request r = Request.findReqByID(idField.getText());
             if(r!=null&&reqList.contains(r)){
                 Controller.replyReq(r,(Teacher) user,2);
+                MasterLogger.getInstance().log("request rejected",false,this.getClass());
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"The request is successfully rejected.");
             }else {
+                MasterLogger.getInstance().log("request not found",true,this.getClass());
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Request not found.");
             }
             new TeacherRequestPanel(user,lastLogin);

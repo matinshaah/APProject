@@ -1,6 +1,7 @@
 package GUI;
 
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class EVCTempScorePanel extends UserMainPanel{
         myCourse.setBounds(150,200,100,40);
     }
     private void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         myCourse.addActionListener(e->new TeacherTempScorePanel(user,lastLogin));
         allCourse.addActionListener(e-> new DepTempScorePanel(user,lastLogin));
     }

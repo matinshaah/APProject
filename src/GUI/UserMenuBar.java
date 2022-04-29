@@ -1,6 +1,7 @@
 package GUI;
 
 import Models.*;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,7 @@ public class UserMenuBar extends JMenuBar {
         setListeners();
     }
     protected void initCom(){
+        MasterLogger.getInstance().log("components are initialized",false,this.getClass());
         reportCard = new MyJMenu("Report Card");
         registration = new MyJMenu("Registration and Restoration");
         educationalService = new MyJMenu("Educational Service");
@@ -35,6 +37,7 @@ public class UserMenuBar extends JMenuBar {
     }
 
     protected void setMenuBar(){
+        MasterLogger.getInstance().log("menu bar is set",false,this.getClass());
         this.add(mainPage);
 //        this.setBackground(Color.cyan);
         mainPage.setOpaque(false);
@@ -62,7 +65,9 @@ public class UserMenuBar extends JMenuBar {
     }
 
     protected void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         exit.addActionListener(e -> {
+            MasterLogger.getInstance().log("user with id "+user.id+" logged out",false,this.getClass());
             this.removeAll();
             MainFrame.mainFrame.update();
             new LoginPanel();

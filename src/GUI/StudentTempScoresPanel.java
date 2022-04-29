@@ -4,6 +4,7 @@ import Controller.Controller;
 import Models.Course;
 import Models.Student;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -64,6 +65,7 @@ public class StudentTempScoresPanel extends UserMainPanel{
         return Course.getCurrentTermCourses(userCourse);
     }
     private void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         String[] column = {"course id","course name","score","score status","objection","teacher answer"};
         table = new JTable(data,column);
         table.setFont(new Font("",Font.PLAIN,20));
@@ -103,6 +105,7 @@ public class StudentTempScoresPanel extends UserMainPanel{
         }
     }
     private void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         recordObjections.addActionListener(e->{
             int row=-1;
             ArrayList<Course> list = findCourses();
@@ -114,15 +117,21 @@ public class StudentTempScoresPanel extends UserMainPanel{
             }
             if(row==-1){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"course not found");
+                MasterLogger.getInstance().log("course not found",true,this.getClass());
             }else{
                 int state=Controller.recordObjection((Student) user,list.get(row).id+"",(table.getValueAt(row,4)+"").trim());
                 if(state==1) {
                     JOptionPane.showMessageDialog(MainFrame.mainFrame, "objection recorded successfully");
+                    MasterLogger.getInstance().log("objection recorded successfully",false,this.getClass());
                 }
                 else if(state==2){
                     JOptionPane.showMessageDialog(MainFrame.mainFrame,"You have already recorded an objection");
+                    MasterLogger.getInstance().log("You have already recorded an objection",true,this.getClass());
                 }
-                else if(state==0) JOptionPane.showMessageDialog(MainFrame.mainFrame,"Please fill the objection part of the course");
+                else if(state==0) {
+                    JOptionPane.showMessageDialog(MainFrame.mainFrame,"Please fill the objection part of the course");
+                    MasterLogger.getInstance().log("Please fill the objection part of the course",true,this.getClass());
+                }
                 new StudentTempScoresPanel(user, lastLogin);
             }
         });

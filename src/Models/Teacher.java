@@ -2,7 +2,6 @@ package Models;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
 
 public class Teacher extends User{
@@ -26,7 +25,6 @@ public class Teacher extends User{
             }
         }else this.courses = new ArrayList<>();
         if(department!=null) {
-            this.department.teachers.add(this);
             if(isDC) department.dc=this;
             if(isEVC) department.evc=this;
         }

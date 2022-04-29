@@ -6,10 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class  User {
-    public static final HashSet<User> userList = new HashSet<>();
+    public static final ArrayList<User> userList = new ArrayList<>();
 
     public String name,email="-",password,nationalCode,phoneNumber;
     public int id;
@@ -21,14 +20,6 @@ public class  User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
 

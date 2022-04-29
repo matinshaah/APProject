@@ -4,6 +4,7 @@ import Controller.Controller;
 import Models.Teacher;
 import Models.User;
 import resources.ImageResource;
+import resources.MasterLogger;
 import resources.ResourceManager;
 
 import javax.swing.*;
@@ -54,6 +55,7 @@ public class TeacherEditPanel extends UserMainPanel{
         image.setBounds(1200,500,96,96);
     }
     private void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         table = new JTable();
         table.setBounds(275,150,800,440);
         table.setBackground(user.color);
@@ -106,12 +108,17 @@ public class TeacherEditPanel extends UserMainPanel{
         }
     }
     protected void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         delete.addActionListener(e ->{
             if(Controller.removeTeacher(teacher)){
+                MasterLogger.getInstance().log("the teacher with id "+teacher.id+" is  deleted",false,this.getClass());
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"The teacher deleted successfully");
                 new DCTeacherPanel(user,lastLogin);
             }
-            else JOptionPane.showMessageDialog(MainFrame.mainFrame,"You can't delete yourself");
+            else {
+                JOptionPane.showMessageDialog(MainFrame.mainFrame,"You can't delete yourself");
+                MasterLogger.getInstance().log("deleting him/herself",true,this.getClass());
+            }
         });
         saveButton.addActionListener(e ->{
             String message=Controller.editTeacher(teacher,(table.getValueAt(0,1)+"").trim(),(table.getValueAt(1,1)+"").trim()
@@ -119,12 +126,22 @@ public class TeacherEditPanel extends UserMainPanel{
                     (table.getValueAt(6,1)+"").trim(),(table.getValueAt(7,1)+"").trim());
             if(! message.equals("")){
                 if(message.equals("id"))
+                {
                     JOptionPane.showMessageDialog(MainFrame.mainFrame,"The user already exists");
-                else JOptionPane.showMessageDialog(MainFrame.mainFrame,"We've got a problem,please check the \""+message+"\" part and try again");
+                    MasterLogger.getInstance().log("user already exists",true,this.getClass());
+                }
+                else {
+                    JOptionPane.showMessageDialog(MainFrame.mainFrame,"We've got a problem,please check the \""+message+"\" part and try again");
+                    MasterLogger.getInstance().log("invalid input in "+message+" part",true,this.getClass());
+                }
             }else {
                 if(teacher==null) {
                     JOptionPane.showMessageDialog(MainFrame.mainFrame, "The teacher is registered successfully");
-                }else JOptionPane.showMessageDialog(MainFrame.mainFrame, "The teacher is edited successfully");
+                    MasterLogger.getInstance().log("new teacher",false,this.getClass());
+                }else {
+                    JOptionPane.showMessageDialog(MainFrame.mainFrame, "The teacher is edited successfully");
+                    MasterLogger.getInstance().log("The teacher with id "+teacher.id+" is edited successfully",false,this.getClass());
+                }
                     if(((Teacher)user).isDC) new DCTeacherPanel(user, lastLogin);
                     else  new UserMainPanel(user, lastLogin);
             }
@@ -133,10 +150,16 @@ public class TeacherEditPanel extends UserMainPanel{
             int state = Controller.setEVC(teacher);
             if(state==0){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"The teacher is promoted successfully");
+                MasterLogger.getInstance().log("The teacher with id "+teacher.id+" is promoted successfully",false,this.getClass());
+
                 new DCTeacherPanel(user,lastLogin);
             }else if(state==1){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"You can't promote yourself to edu vice chair");
-            }else JOptionPane.showMessageDialog(MainFrame.mainFrame,"The teacher has been already edu vice chair");
+                MasterLogger.getInstance().log("promoting him/herself",true,this.getClass());
+            }else {
+                JOptionPane.showMessageDialog(MainFrame.mainFrame,"The teacher has been already edu vice chair");
+                MasterLogger.getInstance().log("the teacher has benn already promoted",true,this.getClass());
+            }
         });
     }
 }

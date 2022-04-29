@@ -4,6 +4,7 @@ import Controller.Controller;
 import Models.Student;
 import Models.Teacher;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,8 +18,7 @@ public class ChangePasswordPanel extends UserMainPanel{
     public ChangePasswordPanel(User user, LocalDateTime loginTime) {
         super(user, loginTime);
         setListeners();
-     //   if(state==1)
-            this.setBounds(0,0,MainFrame.mainFrame.getWidth(),MainFrame.mainFrame.getHeight());
+        this.setBounds(0,0,MainFrame.mainFrame.getWidth(),MainFrame.mainFrame.getHeight());
     }
 
     @Override
@@ -67,6 +67,7 @@ public class ChangePasswordPanel extends UserMainPanel{
     }
 
     private void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         showPass.addActionListener(e -> {
             if(showPass.isSelected()){
                 prePassField.setEchoChar((char) 0);
@@ -80,12 +81,25 @@ public class ChangePasswordPanel extends UserMainPanel{
         });
         saveButton.addActionListener(e->{
             int state = Controller.changePassword(user,prePassField.getText(),newPassField.getText(),confirmPassField.getText());
-            if(state==1) JOptionPane.showMessageDialog(MainFrame.mainFrame,"New passwords do not match");
-            else if(state==2) JOptionPane.showMessageDialog(MainFrame.mainFrame,"Invalid current password");
-            else if(state==3) JOptionPane.showMessageDialog(MainFrame.mainFrame,"Please fill all fields");
-            else if(state==4) JOptionPane.showMessageDialog(MainFrame.mainFrame,"The new password cannot be the same as current password");
+            if(state==1) {
+                JOptionPane.showMessageDialog(MainFrame.mainFrame,"New passwords do not match");
+                MasterLogger.getInstance().log("passwords do not match",true,this.getClass());
+            }
+            else if(state==2) {
+                JOptionPane.showMessageDialog(MainFrame.mainFrame,"Invalid current password");
+                MasterLogger.getInstance().log("invalid current password",true,this.getClass());
+            }
+            else if(state==3) {
+                JOptionPane.showMessageDialog(MainFrame.mainFrame,"Please fill all fields");
+                MasterLogger.getInstance().log("empty fields",true,this.getClass());
+            }
+            else if(state==4) {
+                JOptionPane.showMessageDialog(MainFrame.mainFrame,"The new password cannot be the same as current password");
+                MasterLogger.getInstance().log("the same as current password",true,this.getClass());
+            }
             else {
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Your password is changed successfully");
+                MasterLogger.getInstance().log("user password with id"+user.id+" is changed",false,this.getClass());
                 if(user instanceof Student) {
                     MainFrame.mainFrame.menuBar=new StudentMenuBar(user,LocalDateTime.now());
                     new StudentMainPanel(user,LocalDateTime.now());

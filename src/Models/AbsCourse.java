@@ -22,7 +22,6 @@ public class AbsCourse {
         this.preCourses=preCourses;
         this.department=department;
         this.grade=grade;
-        if(department!= null) department.absCourses.add(this);
         idCounter++;
         this.id=idCounter+10000;
     }

@@ -3,6 +3,7 @@ package GUI;
 import Controller.Controller;
 import Models.Teacher;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,16 +41,19 @@ public class EVCEduStatusPanel extends UserMainPanel{
         searchById.setBounds(550,200,150,40);
     }
     private void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         searchById.addActionListener(e->{
             User user = Controller.findUserById(idField.getText());
             if(user==null||user instanceof Teacher){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Student not found");
+                MasterLogger.getInstance().log("student not found",true,this.getClass());
             }else new StudentEduStatusPanel(user,lastLogin);
         });
         searchByName.addActionListener(e->{
             User user = User.getUserByName(idField.getText());
             if(user==null||user instanceof Teacher){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Student not found");
+                MasterLogger.getInstance().log("student not found",true,this.getClass());
             }else new StudentEduStatusPanel(user,lastLogin);
         });
     }

@@ -31,7 +31,6 @@ public class Course {
         absCourse.courses.add(this);
         this.students=students;
         this.teachers= teachers;
-        if(absCourse.department!=null) absCourse.department.courses.add(this);
     }
     public Course(int term,int total,AbsCourse absCourse,HashSet<Teacher> teachers,ArrayList<Student> students,String classTime,String examTime){
         this(term, total, absCourse, teachers, students, classTime);

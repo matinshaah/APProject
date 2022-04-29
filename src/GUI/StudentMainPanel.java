@@ -2,6 +2,7 @@ package GUI;
 
 import Models.Student;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,7 @@ public class StudentMainPanel extends UserMainPanel {
 
     }
     protected void setMainChart(){
+        MasterLogger.getInstance().log("main chart is set",false,this.getClass());
         String license=student.status== Student.Status.STUDYING?"Allowed to register":"        -";
         String time=student.status== Student.Status.STUDYING?"2022/5/30 9:00 AM":"          -";
         supervisor = new MyJLabel(     "Supervisor:                                                          "+student.supervisor.name);

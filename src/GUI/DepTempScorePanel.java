@@ -4,6 +4,7 @@ import Controller.Controller;
 import Models.Course;
 import Models.Teacher;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,22 +46,26 @@ public class DepTempScorePanel extends UserMainPanel{
     }
 
     private void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         searchTeacher.addActionListener(e->{
             Teacher teacher= Controller.findTeacherByID(idField.getText());
             if(teacher==null){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Teacher not found.");
+                MasterLogger.getInstance().log("Teacher not found",true,this.getClass());
             }else new DepTeacherScorePanel(teacher,lastLogin);
         });
         searchStudent.addActionListener(e->{
             User user =Controller.findUserById(idField.getText());
             if(user==null||user instanceof Teacher){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Student not found.");
+                MasterLogger.getInstance().log("Student not found",true,this.getClass());
             }else new DepStudentScorePanel(user,lastLogin);
         });
         searchCourse.addActionListener(e->{
             Course course =Controller.findCourseByID(idField.getText());
             if(course==null){
                 JOptionPane.showMessageDialog(MainFrame.mainFrame,"Course not found.");
+                MasterLogger.getInstance().log("Course not found",true,this.getClass());
             }else new DepCourseScorePanel(user,lastLogin,course);
         });
     }

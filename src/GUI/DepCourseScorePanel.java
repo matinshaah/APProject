@@ -4,6 +4,7 @@ import Controller.Controller;
 import Models.Course;
 import Models.Student;
 import Models.User;
+import resources.MasterLogger;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -56,6 +57,7 @@ public class DepCourseScorePanel extends UserMainPanel{
         pane.setBounds(100,300,1200,300);
     }
     private void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         String[] column = {"student name","student id","course name","score","objection text","answer"};
         table = new JTable(data,column);
         table.setFont(new Font("",Font.PLAIN,20));
@@ -89,6 +91,7 @@ public class DepCourseScorePanel extends UserMainPanel{
         updatePane();
     }
     private void setData(Course course){//"student name","student id","course name","score","objection text","answer"
+
         ArrayList<Student> list =course.students;
         int size=list.size();
         data=new String[size][6];

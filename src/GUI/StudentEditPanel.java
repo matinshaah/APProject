@@ -4,6 +4,7 @@ import Controller.Controller;
 import Models.Student;
 import Models.User;
 import resources.ImageResource;
+import resources.MasterLogger;
 import resources.ResourceManager;
 
 import javax.swing.*;
@@ -44,6 +45,7 @@ public class StudentEditPanel extends UserMainPanel{
         image.setBounds(1200,500,96,96);
     }
     protected void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         table = new JTable();
         table.setBounds(275,150,800,450);
         table.setBackground(user.color);
@@ -100,21 +102,28 @@ public class StudentEditPanel extends UserMainPanel{
 
     }
     protected void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         saveButton.addActionListener(e->{
             String message=Controller.editStudent(student,(table.getValueAt(0,1)+"").trim(),(table.getValueAt(1,1)+"").trim()
                     ,(table.getValueAt(2,1)+"").trim(),(table.getValueAt(3,1)+"").trim(),(table.getValueAt(4,1)+"").trim(),(table.getValueAt(5,1)+"").trim(),
                     (table.getValueAt(6,1)+"").trim(),(table.getValueAt(7,1)+"").trim(),(table.getValueAt(8,1)+"").trim(),
                     (table.getValueAt(9,1)+"").trim());
             if(! message.equals("")) {
-                if (message.equals("id"))
+                if (message.equals("id")) {
                     JOptionPane.showMessageDialog(MainFrame.mainFrame, "The user already exists");
-                else
+                    MasterLogger.getInstance().log("the user already exists",true,this.getClass());
+                }
+                else {
                     JOptionPane.showMessageDialog(MainFrame.mainFrame, "We've got a problem,please check the \"" + message + "\" part and try again");
+                    MasterLogger.getInstance().log("invalid input from "+message+" part",true,this.getClass());
+                }
             }else if(student==null) {
+                MasterLogger.getInstance().log("The student  is registered successfully",false,this.getClass());
                 JOptionPane.showMessageDialog(MainFrame.mainFrame, "The student is registered successfully");
                 new UserMainPanel(user,lastLogin);
             }else{
                 JOptionPane.showMessageDialog(MainFrame.mainFrame, "The student is edited successfully");
+                MasterLogger.getInstance().log("The student with id \""+student.id+"\" is edited successfully",false,this.getClass());
                 new StudentMainPanel(user,lastLogin);
             }
         });

@@ -5,6 +5,8 @@ import Models.AbsCourse;
 import Models.Course;
 import Models.Teacher;
 import Models.User;
+import resources.MasterLogger;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -41,6 +43,7 @@ public class CourseEditPanel extends UserMainPanel{
         saveButton.setBounds(860,580,80,30);
     }
     private void initTable(){
+        MasterLogger.getInstance().log("table is initialized",false,this.getClass());
         table = new JTable();
         table.setBounds(300,120,800,450);
         table.setBackground(user.color);
@@ -66,6 +69,7 @@ public class CourseEditPanel extends UserMainPanel{
     }
 
     private void setTable(){
+        MasterLogger.getInstance().log("table is set",false,this.getClass());
         table.setValueAt("name",0,0);
         table.setValueAt("credit",1,0);
         table.setValueAt("total",2,0);
@@ -102,6 +106,7 @@ public class CourseEditPanel extends UserMainPanel{
         }
     }
     private void setListeners(){
+        MasterLogger.getInstance().log("listeners are set",false,this.getClass());
         saveButton.addActionListener(e -> {
             String message = Controller.editCourse(course,(table.getValueAt(0,1)+"").trim(),(table.getValueAt(1,1)+"").trim(),
                     (table.getValueAt(2,1)+"").trim(),(table.getValueAt(3,1)+"").trim(),
@@ -109,17 +114,30 @@ public class CourseEditPanel extends UserMainPanel{
                     (table.getValueAt(7,1)+"").trim(),(table.getValueAt(8,1)+"").trim(),(table.getValueAt(9,1)+"").trim());
             if(! message.equals("")){
                 if(message.equals("id"))
+                {
                     JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course already exists");
-                else JOptionPane.showMessageDialog(MainFrame.mainFrame,"We've got a problem,please check the \""+message+"\" part and try again");
+                    MasterLogger.getInstance().log("course already exists",true,this.getClass());
+                }
+                else {
+                    JOptionPane.showMessageDialog(MainFrame.mainFrame,"We've got a problem,please check the \""+message+"\" part and try again");
+                    MasterLogger.getInstance().log("invalid input from "+message+" part",true,this.getClass());
+                }
             }else {
-                if(course==null) JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course is added successfully");
-                else JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course edited successfully");
+                if(course==null) {
+                    JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course is added successfully");
+                    MasterLogger.getInstance().log("new course created",false,this.getClass());
+                }
+                else {
+                    JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course edited successfully");
+                    MasterLogger.getInstance().log("the course with id "+course.id+" edited",false,this.getClass());
+                }
                 new EVCCoursePanel(user,lastLogin);
             }
         });
         delete.addActionListener(e -> {
-            Controller.removeCourse(course);
+            MasterLogger.getInstance().log("the course with id "+course.id+" deleted",false,this.getClass());
             JOptionPane.showMessageDialog(MainFrame.mainFrame,"The course deleted successfully");
+            Controller.removeCourse(course);
             new EVCCoursePanel(user,lastLogin);
         });
     }

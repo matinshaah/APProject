@@ -26,7 +26,8 @@ public class StudentMainPanel extends UserMainPanel {
         MasterLogger.getInstance().log("main chart is set",false,this.getClass());
         String license=student.status== Student.Status.STUDYING?"Allowed to register":"        -";
         String time=student.status== Student.Status.STUDYING?"2022/5/30 9:00 AM":"          -";
-        supervisor = new MyJLabel(     "Supervisor:                                                          "+student.supervisor.name);
+        String supervisorName=student.supervisor!=null?student.supervisor.name:"   -";
+        supervisor = new MyJLabel(     "Supervisor:                                                          "+supervisorName);
         eduStatus = new MyJLabel(        "Educational Status:                                            "+student.status.name);
         registrationLicense = new MyJLabel("Registration Permission:                                   "+license);
         registrationTime = new MyJLabel( "Registration Time:                                            "+time);

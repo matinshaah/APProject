@@ -45,7 +45,8 @@ public class LoadingData {
                         details[i]=details[i].substring(j+1);
                         break;
                     }
-                }            }
+                }
+            }
             System.out.println();
 
             switch (function){
@@ -274,7 +275,7 @@ public class LoadingData {
                     break;
                 case "setScore":
                     student = Student.getStudentById(details[1]);
-                    long score = Long.parseLong(details[3]);
+                    Double score = Double.parseDouble(details[3]);
                     student.scores.get(details[2]).score=score+"";
                     break;
 

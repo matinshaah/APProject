@@ -44,3 +44,7 @@ request/	}id:1003	}result:1
 request/	}id:1002	}result:2
 newRequest/	}type:recommend	}studentID:99000001	}teacherID:10001
 request/	}id:1005	}result:1
+student/	}id:99000001	}name:Matin	}nationalCode:12345667979676	}grade:BS	}supervisor:10001	}status:studying	}phoneNumber:3534343	}imagePath:src/resources/Images/defaultProfile.png	}email:,n,n,nshahnaziamirmatin@gamil.com
+student/	}id:99000001	}name:Matin	}nationalCode:12345667979676	}grade:BS	}supervisor:10001	}status:studying	}phoneNumber:3534343	}imagePath:src/resources/Images/defaultProfile.png	}email:shahnaziamirmatin@gamil.com
+newRequest/	}type:eduCertificate	}studentID:99000001
+newRequest/	}type:minor	}studentID:99000001	}department:CE

@@ -80,7 +80,7 @@ public class Student extends User{
         int number=0;
         for (Course c :
                 courses) {
-            if(c.status!= Course.ScoreStatus.NotGiven&&scores.get(c.id+"").passed) number+=c.absCourse.credit;
+            if(c.status!= Course.ScoreStatus.NotGiven&&scores.get(c.id+"").passed()) number+=c.absCourse.credit;
         }
         return number;
     }
@@ -104,7 +104,7 @@ public class Student extends User{
         private static final DecimalFormat df2 = new DecimalFormat("0");
         public String score="";
         public String objectionText="",objectionAnswer="";
-        public boolean isFinal,passed;
+        public boolean isFinal;
         public Score(){
 
         }
@@ -115,7 +115,9 @@ public class Student extends User{
             d = Double.parseDouble(string);
             d/=4d;
             score=df.format(d);
-            passed=d>=12;
+        }
+        public boolean passed(){
+            return Double.parseDouble(score)>=12;
         }
     }
     public static Student getStudentById(String id){

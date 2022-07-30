@@ -98,7 +98,7 @@ public class StudentTempScoresPanel extends UserMainPanel{
             data[i][0]=course.id+"";
             data[i][1]=course.absCourse.name;
             data[i][2]=score.score;
-            data[i][3]=score.passed?"passed":"failed";
+            data[i][3]=score.passed()?"passed":"failed";
             data[i][4]=score.objectionText;
             data[i][5]= score.objectionAnswer;
         }

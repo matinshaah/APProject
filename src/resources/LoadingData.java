@@ -1,7 +1,7 @@
 package resources;
 
-import Controller.Controller;
-import Models.*;
+import controller.Controller;
+import models.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;

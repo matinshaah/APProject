@@ -1,5 +1,5 @@
-import GUI.LoginPanel;
-import GUI.MainFrame;
+import gui.LoginPanel;
+import gui.MainFrame;
 import resources.LoadingData;
 import resources.MasterLogger;
 import javax.swing.*;

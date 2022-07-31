@@ -36,7 +36,7 @@ public class Controller {
         if(prePass.equals(newPass)) return 4;
         try {
             if(!user.password.equals(User.hashPassword(prePass)))
-            return 2;
+             return 2;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -168,8 +168,7 @@ public class Controller {
         ArrayList<String> str = new ArrayList<>();
         str.add("request");
         str.add("id:"+request.id);
-        if(request instanceof Minor){
-            Minor minor = (Minor) request;
+        if(request instanceof Minor minor){
             if(minor.secondDep==teacher.department) {
                 minor.secondAccepted=isAccepted;
                 str.add("second:2"+isAccepted);
@@ -599,8 +598,7 @@ public class Controller {
         }
         for (User user:
              User.userList) {
-            if(user instanceof Student){
-                Student student =(Student) user;
+            if(user instanceof Student student){
                 if(student.supervisor==teacher) student.supervisor=null;
             }
         }
@@ -627,7 +625,7 @@ public class Controller {
         for (User u :
                 User.userList) {
             if(id.equals(u.id+""))
-            return u;
+                return u;
         }
         return null;
     }

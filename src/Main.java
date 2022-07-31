@@ -11,6 +11,7 @@ public class Main {
 
         SwingUtilities.invokeLater(() -> {
 
+
             MainFrame.mainFrame = new MainFrame();
             new LoginPanel();
 
